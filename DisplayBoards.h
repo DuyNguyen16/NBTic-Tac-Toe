@@ -7,8 +7,9 @@
 class DisplayBoards
 {
 private:
-    NBTicTacToe nb;
+    NBTicTacToe* nb;
 public:
+    DisplayBoards(NBTicTacToe* grid) : nb(grid) {}
     void displayBoardsRow(int, int, int);
 
 	// display the nine Tic Tac Toe Board
@@ -41,11 +42,25 @@ void DisplayBoards::displayBoardsRow(int boardRowNumber, int x, int y)
 		}
 
 		//  Print each row rows
-		for (int j = 0; j < 3; j++)
-		{
-			TicTacToe* board = &nb.getGrid()[j]; // Access the first TicTacToe board
-            board->printOneBoardRow(col);
-		}
+        if (boardRowNumber == 0) {
+            for (int j = 0; j < 3; j++)
+            {
+                TicTacToe* board = &nb->getGrid()[j];
+                board->printOneBoardRow(col);
+            }
+        } else if (boardRowNumber == 1) {
+            for (int j = 3; j < 6; j++)
+            {
+                TicTacToe* board = &nb->getGrid()[j];
+                board->printOneBoardRow(col);
+            }
+        } else if (boardRowNumber == 2) {
+            for (int j = 6; j < 9; j++)
+            {
+                TicTacToe* board = &nb->getGrid()[j];
+                board->printOneBoardRow(col);
+            }
+        }
 
 		cout << endl;
 
