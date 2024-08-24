@@ -57,16 +57,16 @@ int NBGame::play() {
         }
 
         // calculate the current board position
-        int boardPos = (3 * nineBoard.getCurrentMoveX()) + nineBoard.getCurrentMoveY();
+        int boardPosition = (3 * nineBoard.getCurrentMoveX()) + nineBoard.getCurrentMoveY();
 
         // get the board
-        TicTacToe* board = &nineBoard.getGrid()[boardPos];
+        TicTacToe* board = &nineBoard.getGrid()[boardPosition];
         
         // get the player move
         if (playerTurn == 1) {
             // get computer move and add it to board
-            computerPlayer.getMove(playerMoveX, playerMoveY, board);
-            board->addMove(playerMoveX, playerMoveY, computerPlayer.getPlayerNumber());
+            computerPlayer.findBestMove(board);
+            board->addMove(computerPlayer.getBestMoveX(), computerPlayer.getBestMoveY(), computerPlayer.getPlayerNumber());
         } else {
             // get Human move and add it to board
             humanPlayer.getMove(playerMoveX, playerMoveY, board);
@@ -91,15 +91,15 @@ int NBGame::play() {
         // Display the new board 
         displayBoards.displayBoards(nineBoard.getCurrentMoveX(), nineBoard.getCurrentMoveY());
 
-        
+        // check the game status
         int gameStats = gameManagement.gameStatus(board);
 
+        // exit the game if true
         if (gameStats != 0 && nineBoard.getTotalNumberOfMoves() >= 81) {
             return 0;
         }
-
-
         
+        // swap the player turn
 		if (playerTurn == 1)
 			playerTurn = -1;
 		else
