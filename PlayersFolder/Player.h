@@ -1,12 +1,12 @@
 #ifndef Player_H_
 #define Player_H_
 
-#include "TicTacToe.h"
+#include "../TicTacToe.h"
 
 class Player
 {
 private:
-    char player;
+    int player;
 
 public:
     Player(int x)
@@ -71,13 +71,13 @@ void Player::displayTurn(int playerNumber)
     if (playerNumber == 1)
     {
         cout << " -------------------------------------------\n";
-        cout << " Player " << "X" << " turn:\n";
+        cout << " Player X turn:\n";
         cout << " -------------------------------------------\n";
     }
     else
     {
         cout << " -------------------------------------------\n";
-        cout << " Player " << "O" << " turn:\n";
+        cout << " Player O turn:\n";
         cout << " -------------------------------------------\n";
     }
 };

@@ -5,9 +5,9 @@
 #include "TicTacToe.h"
 #include "DisplayBoards.h"
 #include "GameManagement.h"
-#include "Player.h"
-#include "HumanPlayer.h"
-#include "GameStatus.h"
+#include "PlayersFolder/Player.h" 
+#include "PlayersFolder/HumanPlayer.h"
+#include "PlayersFolder/ComputerPlayer.h"
 
 
 using namespace std;
@@ -16,7 +16,8 @@ using namespace std;
 class NBGame
 {
 private:
-    NBTicTacToe nb;
+    NBTicTacToe nineBoard;
+    GameManagement gameManagement;
 public:
     int play();
 
@@ -24,26 +25,20 @@ public:
 
 
 int NBGame::play() {
-    // db.displayBoards(0,0); // Initial board
-    // show(); // update the move
-    // db.displayBoardsRow(0, 0, 0);
-
-    DisplayBoards db(&nb);
-    GameManagement game;
-    GameStatus gameStatus;
-
-
-    Player playerX(1);
-    Player playerO(-1);
+    DisplayBoards displayBoards(&nineBoard);
+    
+    HumanPlayer humanPlayer(-1);
+    ComputerPlayer computerPlayer(1);
+    
 
     // cout << (board->getBoard()[0]);
 
     int x, y;
     // playerX.getMove(x, y, board0);
     // board0->addMove(x,y, 1);
-    game.startGame();
-    nb.getFocusBoard(x, y);
-    db.displayBoards(x,y);
+    gameManagement.startGame();
+    nineBoard.getFocusBoard(x, y);
+    displayBoards.displayBoards(x,y);
 
     // cout << board0->getNoOfMoves();
     int turn = 1;
@@ -53,33 +48,33 @@ int NBGame::play() {
         int playerMoveY;
 
         if (turn == 1 ) {
-            playerX.displayTurn(1);
+            humanPlayer.displayTurn(1);
         } else {
-            playerO.displayTurn(-1);
+            computerPlayer.displayTurn(-1);
         }
 
 
-        int calCurrentPos = (3 * nb.getCurrentMoveX()) + nb.getCurrentMoveY();
+        int calCurrentPos = (3 * nineBoard.getCurrentMoveX()) + nineBoard.getCurrentMoveY();
 
-        TicTacToe* board = &nb.getGrid()[calCurrentPos];
+        TicTacToe* board = &nineBoard.getGrid()[calCurrentPos];
 
         if (turn == 1) {
-            playerX.getMove(playerMoveX, playerMoveY, board);
+            humanPlayer.getMove(playerMoveX, playerMoveY, board);
             board->addMove(playerMoveX, playerMoveY, 1);
         } else {
-            playerO.getMove(playerMoveX, playerMoveY, board);
+            computerPlayer.getMove(playerMoveX, playerMoveY, board);
             board->addMove(playerMoveX, playerMoveY, -1);
         }
         
-        nb.incrementTotalNoOfMoves();
-        nb.updateFocus(playerMoveX, playerMoveY);
+        nineBoard.incrementTotalNoOfMoves();
+        nineBoard.updateFocus(playerMoveX, playerMoveY);
 
-        db.displayBoards(nb.getCurrentMoveX(), nb.getCurrentMoveY());
+        displayBoards.displayBoards(nineBoard.getCurrentMoveX(), nineBoard.getCurrentMoveY());
 
-        int gameStats = gameStatus.gameStatus(board);
+        int gameStats = gameManagement.gameStatus(board);
         
 
-        if (gameStats != 0 || nb.getTotalNumberOfMoves() >= 81) {
+        if (gameStats != 0 || nineBoard.getTotalNumberOfMoves() >= 81) {
             return 0;
         }
 
