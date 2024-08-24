@@ -66,7 +66,9 @@ int NBGame::play() {
         if (playerTurn == 1) {
             // get computer move and add it to board
             computerPlayer.findBestMove(board);
-            board->addMove(computerPlayer.getBestMoveX(), computerPlayer.getBestMoveY(), computerPlayer.getPlayerNumber());
+            playerMoveX = computerPlayer.getBestMoveX();
+            playerMoveY = computerPlayer.getBestMoveY();
+            board->addMove(playerMoveX, playerMoveY, computerPlayer.getPlayerNumber());
         } else {
             // get Human move and add it to board
             humanPlayer.getMove(playerMoveX, playerMoveY, board);
@@ -94,8 +96,9 @@ int NBGame::play() {
         // check the game status
         int gameStats = gameManagement.gameStatus(board);
 
+
         // exit the game if true
-        if (gameStats != 0 && nineBoard.getTotalNumberOfMoves() >= 81) {
+        if (gameStats != 0 || nineBoard.getTotalNumberOfMoves() >= 81) {
             return 0;
         }
         

@@ -22,6 +22,7 @@ void GameManagement::startGame() {
 int GameManagement::gameStatus(TicTacToe *board) {
     // check if board is full
 	if (board->getNoOfMoves() >= 9) {
+        displayWinner(2);
 		return 2;
     }
     // cout << board->getBoard()[0];
@@ -117,37 +118,6 @@ int GameManagement::gameStatus(TicTacToe *board) {
 
 	return 0;
 }
-
-int GameManagement::checkRows(TicTacToe *board) {
-        // Check first row
-    if (board->getBoard()[0] == board->getBoard()[1] && board->getBoard()[1] == board->getBoard()[2]) {
-        if (board->getBoard()[0] == 1) {
-            return 1;
-        } else if (board->getBoard()[0] == -1) {
-            return -1;
-        }
-    }
-
-    // check second row
-        if (board->getBoard()[3] == board->getBoard()[4] && board->getBoard()[4] == board->getBoard()[5]) {
-        if (board->getBoard()[3] == 1) {
-            return 1;
-        } else if (board->getBoard()[0] == -1) {
-            return -1;
-        }
-    }
-
-    // check third row 
-        if (board->getBoard()[6] == board->getBoard()[7] && board->getBoard()[7] == board->getBoard()[8]) {
-        if (board->getBoard()[6] == 1) {
-            return 1;
-        } else if (board->getBoard()[0] == -1) {
-            return -1;
-        }
-    }
-    
-    return 0;
-};
 
 int GameManagement::displayWinner(int playerNumber) {
     if (playerNumber == 1)

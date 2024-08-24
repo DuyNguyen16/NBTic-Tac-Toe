@@ -31,12 +31,14 @@ public:
     {
         return move.col;
     };
+
+    int gameStatus(TicTacToe *board);
 };
 
 // Minimax algorithm
 int ComputerPlayer::minimax(bool isMaxiTurn, TicTacToe *board)
 {
-    int score = gameMangement.gameStatus(board);
+    int score = gameStatus(board);
 
     if (score == 1)
     {
@@ -60,16 +62,22 @@ int ComputerPlayer::minimax(bool isMaxiTurn, TicTacToe *board)
         int bestValue = -100000;
 
         //  Loop throug all cells
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 3; i++)
         {
-            if (board->getBoard()[i] == 0)
+            for (int j = 0; j < 3; j++)
             {
-                board->getBoard()[i] = 1;
+                // Check if cell is empty
+                int cal = (3 * i) + j;
+                if (board->getBoard()[cal] == 0)
+                {
+                    board->addMove(i, j, 1);
 
-                // Call minimax recursively
-                bestValue = max(bestValue, minimax(!isMaxiTurn, board));
+                    // Call minimax recursively
+                    bestValue = max(bestValue, minimax(!isMaxiTurn, board));
 
-                board->getBoard()[i] = 0;
+                    // return back to the board state previously
+                    board->addMove(i, j, 0);
+                }
             }
         }
         return bestValue;
@@ -80,17 +88,23 @@ int ComputerPlayer::minimax(bool isMaxiTurn, TicTacToe *board)
     {
         int bestValue = 100000;
 
-        //  Loop throug all cells
-        for (int i = 0; i < 9; i++)
+        // loop through every cells on the board
+        for (int i = 0; i < 3; i++)
         {
-            if (board->getBoard()[i] == 0)
+            for (int j = 0; j < 3; j++)
             {
-                board->getBoard()[i] = -1;
+                // Check if cell is empty
+                int cal = (3 * i) + j;
+                if (board->getBoard()[cal] == 0)
+                {
+                    board->addMove(i, j, -1);
 
-                // Call minimax recursively
-                bestValue = min(bestValue, minimax(!isMaxiTurn, board));
+                    // Call minimax recursively
+                    bestValue = min(bestValue, minimax(!isMaxiTurn, board));
 
-                board->getBoard()[i] = 0;
+                    // return back to the board state previously
+                    board->addMove(i, j, 0);
+                }
             }
         }
         return bestValue;
@@ -105,46 +119,32 @@ void ComputerPlayer::findBestMove(TicTacToe *board)
     // Traverse all cells, evaluate minimax function for
     // all empty cells. And return the cell with optimal
     // value.
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 3; i++)
     {
-        if (board->getBoard()[i] == 0)
+        for (int j = 0; j < 3; j++)
         {
-            board->getBoard()[i] = 1;
-
-            int moveValue = minimax(false, board);
-
-            board->getBoard()[i] = 0;
-
-            if (moveValue > bestValue)
+            // Check if cell is empty
+            int cal = (3 * i) + j;
+            if (board->getBoard()[cal] == 0)
             {
-                switch (i)
+                // Make the move
+                board->addMove(i, j, 1);
+
+                // compute evaluation function for this
+                // move.
+                int moveValue = minimax(false, board);
+                
+
+                // Undo the move
+                board->addMove(i, j, 0);
+
+
+                // If the value of the current move is
+                // more than the best value, then update
+                // best/
+                if (moveValue > bestValue)
                 {
-                case 0:
-                    setBestMoves(0, 0);
-                    bestValue = moveValue;
-                case 1:
-                    setBestMoves(0, 1);
-                    bestValue = moveValue;
-                case 2:
-                    setBestMoves(0, 2);
-                    bestValue = moveValue;
-                case 3:
-                    setBestMoves(1, 0);
-                    bestValue = moveValue;
-                case 4:
-                    setBestMoves(1, 1);
-                    bestValue = moveValue;
-                case 5:
-                    setBestMoves(1, 2);
-                    bestValue = moveValue;
-                case 6:
-                    setBestMoves(2, 0);
-                    bestValue = moveValue;
-                case 7:
-                    setBestMoves(2, 1);
-                    bestValue = moveValue;
-                case 8:
-                    setBestMoves(2, 2);
+                    setBestMoves(i, j);
                     bestValue = moveValue;
                 }
             }
@@ -161,6 +161,106 @@ void ComputerPlayer::findBestMove(TicTacToe *board)
 
         setBestMoves(x, y);
     }
+}
+
+
+int ComputerPlayer::gameStatus(TicTacToe *board) {
+    // check if board is full
+	if (board->getNoOfMoves() >= 9) {
+		return 2;
+    }
+    // cout << board->getBoard()[0];
+    // Check first row
+    if (board->getBoard()[0] == board->getBoard()[1] && board->getBoard()[1] == board->getBoard()[2]) {
+        if (board->getBoard()[0] == 1) {
+            
+            return 1;
+        } else if (board->getBoard()[0] == -1) {
+            
+            return -1;
+        }
+    }
+
+    // check second row
+    if (board->getBoard()[3] == board->getBoard()[4] && board->getBoard()[4] == board->getBoard()[5]) {
+        if (board->getBoard()[3] == 1) {
+            
+            return 1;
+        } else if (board->getBoard()[3] == -1) {
+            
+            return -1;
+        }
+    }
+
+    // check third row 
+    if (board->getBoard()[6] == board->getBoard()[7] && board->getBoard()[7] == board->getBoard()[8]) {
+        if (board->getBoard()[6] == 1) {
+            
+            return 1;
+        } else if (board->getBoard()[6] == -1) {
+            
+            return -1;
+        }
+    }
+
+    
+    // Check first column
+    if (board->getBoard()[0] == board->getBoard()[3] && board->getBoard()[3] == board->getBoard()[6]) {
+        if (board->getBoard()[0] == 1) {
+            
+            return 1;
+        } else if (board->getBoard()[0] == -1) {
+            
+            return -1;
+        }
+    }
+
+    // Check second column
+    if (board->getBoard()[1] == board->getBoard()[4] && board->getBoard()[4] == board->getBoard()[7]) {
+        if (board->getBoard()[1] == 1) {
+            
+            return 1;
+        } else if (board->getBoard()[1] == -1) {
+            
+            return -1;
+        }
+    }
+
+    // Check third column
+    if (board->getBoard()[2] == board->getBoard()[5] && board->getBoard()[5] == board->getBoard()[8]) {
+        if (board->getBoard()[2] == 1) {
+            
+            return 1;
+        } else if (board->getBoard()[2] == -1) {
+            
+            return -1;
+        }
+    }
+
+
+
+    // check diag
+    if (board->getBoard()[0] == board->getBoard()[4] && board->getBoard()[4] == board->getBoard()[8]) {
+        if (board->getBoard()[0] == 1) {
+            
+            return 1;
+        } else if (board->getBoard()[0] == -1) {
+            
+            return -1;
+        }
+    }
+    
+    if (board->getBoard()[2] == board->getBoard()[4] && board->getBoard()[4] == board->getBoard()[6]) {
+        if (board->getBoard()[2] == 1) {
+            
+            return 1;
+        } else if (board->getBoard()[2] == -1) {
+            
+            return -1;
+        }
+    }
+
+	return 0;
 }
 
 #endif
