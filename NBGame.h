@@ -37,64 +37,76 @@ int NBGame::play() {
     // playerX.getMove(x, y, board0);
     // board0->addMove(x,y, 1);
     gameManagement.startGame();
-    nineBoard.getFocusBoard(x, y);
+    nineBoard.getRandomFocusBoard(x, y);
     displayBoards.displayBoards(x,y);
 
     // cout << board0->getNoOfMoves();
-    int turn = 1;
-    int done = 0;
-    while (done == 0) {
+    // player turn
+    int playerTurn = 1;
+
+    while (true) {
+        // player moves
         int playerMoveX;
         int playerMoveY;
 
-        if (turn == 1 ) {
-            humanPlayer.displayTurn(1);
+        // display the player turn
+        if (playerTurn == 1 ) {
+            computerPlayer.displayTurn();
         } else {
-            computerPlayer.displayTurn(-1);
+            humanPlayer.displayTurn();
         }
 
+        // calculate the current board position
+        int boardPos = (3 * nineBoard.getCurrentMoveX()) + nineBoard.getCurrentMoveY();
 
-        int calCurrentPos = (3 * nineBoard.getCurrentMoveX()) + nineBoard.getCurrentMoveY();
-
-        TicTacToe* board = &nineBoard.getGrid()[calCurrentPos];
-
-        if (turn == 1) {
-            humanPlayer.getMove(playerMoveX, playerMoveY, board);
-            board->addMove(playerMoveX, playerMoveY, 1);
-        } else {
+        // get the board
+        TicTacToe* board = &nineBoard.getGrid()[boardPos];
+        
+        // get the player move
+        if (playerTurn == 1) {
+            // get computer move and add it to board
             computerPlayer.getMove(playerMoveX, playerMoveY, board);
-            board->addMove(playerMoveX, playerMoveY, -1);
+            board->addMove(playerMoveX, playerMoveY, computerPlayer.getPlayerNumber());
+        } else {
+            // get Human move and add it to board
+            humanPlayer.getMove(playerMoveX, playerMoveY, board);
+            board->addMove(playerMoveX, playerMoveY, humanPlayer.getPlayerNumber());
         }
         
+        // increment the total moves of all boards
         nineBoard.incrementTotalNoOfMoves();
-        nineBoard.updateFocus(playerMoveX, playerMoveY);
 
+        // check if the board is available
+        int checkBoard = nineBoard.checkIfBoardAvailable(playerMoveX, playerMoveY);
+        
+        // check if the board is available
+        if (checkBoard == 1) {
+            // get random board
+            nineBoard.getRandomFocusBoard(x, y);
+        } else {
+            // refocus the grid board to the player selected position on a board
+            nineBoard.updateFocus(playerMoveX, playerMoveY);
+        }
+
+        // Display the new board 
         displayBoards.displayBoards(nineBoard.getCurrentMoveX(), nineBoard.getCurrentMoveY());
 
-        int gameStats = gameManagement.gameStatus(board);
         
+        int gameStats = gameManagement.gameStatus(board);
 
-        if (gameStats != 0 || nineBoard.getTotalNumberOfMoves() >= 81) {
+        if (gameStats != 0 && nineBoard.getTotalNumberOfMoves() >= 81) {
             return 0;
         }
 
 
         
-		if (turn == 1)
-			turn = -1;
+		if (playerTurn == 1)
+			playerTurn = -1;
 		else
 		{
-			turn = 1;
+			playerTurn = 1;
 		}
     }
-    
-    
-    
-    
-
-
-
-
     return 0;
 };
 

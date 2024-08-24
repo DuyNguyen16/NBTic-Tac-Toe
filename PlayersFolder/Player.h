@@ -6,17 +6,19 @@
 class Player
 {
 private:
-    int player;
+    int playerNumber;
 
 public:
     Player(int x)
     {
-        player = x;
+        playerNumber = x;
     }
     bool getMove(int &x, int &y, TicTacToe *board);
     bool isValidMove(int x, int y, TicTacToe *board);
 
-    void displayTurn(int playerNumber);
+    void displayTurn();
+
+    int getPlayerNumber() {return playerNumber;}
 };
 
 bool Player::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
@@ -66,7 +68,7 @@ bool Player::isValidMove(int x, int y, TicTacToe *board)
     }
 };
 
-void Player::displayTurn(int playerNumber)
+void Player::displayTurn()
 {
     if (playerNumber == 1)
     {

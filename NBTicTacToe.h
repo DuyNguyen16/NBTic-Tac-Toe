@@ -41,7 +41,7 @@ public:
         return &grid[0][0]; // Pointer to the first TicTacToe board
     }
 
-	void getFocusBoard(int &x, int &y );
+	void getRandomFocusBoard(int &x, int &y );
 
 	int checkIfBoardAvailable(int checkX, int checkY);
 
@@ -53,7 +53,7 @@ private:
 
 
 
-void NBTicTacToe::getFocusBoard(int &x, int &y) {
+void NBTicTacToe::getRandomFocusBoard(int &x, int &y) {
 		do
 	{
 		srand(time(nullptr));
