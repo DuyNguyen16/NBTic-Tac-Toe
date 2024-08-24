@@ -4,6 +4,9 @@
 #include "NBTicTacToe.h"
 #include "TicTacToe.h"
 #include "DisplayBoards.h"
+#include "GetMove.h"
+#include "GameManagement.h"
+#include "Player.h"
 
 
 using namespace std;
@@ -15,21 +18,8 @@ private:
     NBTicTacToe nb;
 public:
     int play();
-    void show();
 
 };
-
-// Implementation of the show function
-// void NBGame::show() {
-//     // Access grid[0][0]
-//     TicTacToe* firstBoard = &nb.getGrid()[0]; // Access the first TicTacToe board
-//     TicTacToe* forthboard = &nb.getGrid()[4]; // Access the first TicTacToe board
-
-//     // Update the position [0][0] on this board to 1
-//     firstBoard->addMove(0, 0, 1);
-//     forthboard->addMove(0,0, -1);
-// };
-
 
 
 int NBGame::play() {
@@ -38,7 +28,9 @@ int NBGame::play() {
     // db.displayBoardsRow(0, 0, 0);
 
     DisplayBoards db(&nb);
+    GameManagement game;
 
+    TicTacToe* board = &nb.getGrid()[-1];
     TicTacToe* board0 = &nb.getGrid()[0];
     TicTacToe* board1 = &nb.getGrid()[1];
     TicTacToe* board2 = &nb.getGrid()[2];
@@ -49,18 +41,29 @@ int NBGame::play() {
     TicTacToe* board7 = &nb.getGrid()[7];
     TicTacToe* board8 = &nb.getGrid()[8];
 
-    board0->addMove(0, 0, 1);
-    board1->addMove(1, 1, -1);
-    board2->addMove(0, 1, 1);
-    board3->addMove(2, 2, 1);
-    board4->addMove(1, 1, 1);
-    board5->addMove(0, 0, -1);
 
-    board6->addMove(2, 0, -1);
-    board7->addMove(2, 1, 1);
-    board8->addMove(1, 2, -1);
+    Player playerX(1);
+    Player playerO(-1);
+
 
     db.displayBoards(0,0);
+    // cout << (board->getBoard()[0]);
+
+    
+    int x, y;
+    playerX.getMove(x, y, board0);
+    board0->addMove(x,y, 1);
+
+
+    cout << board0->getNoOfMoves();
+
+
+    
+
+    
+    
+    
+    
 
 
 

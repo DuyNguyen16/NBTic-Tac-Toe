@@ -18,7 +18,6 @@ private:
 
 public:
 	TicTacToe();
-	bool isValidMove(int, int);
 	void addMove(int, int, int);
 
 	void printOneBoardRow(int row);
@@ -33,6 +32,10 @@ public:
 	{
 		noOfMoves += 1;
 	};
+
+	int *getBoard() {
+		return &board[0][0]; // return a pointer pointed at the first element of the board
+	};
 };
 
 
@@ -42,32 +45,10 @@ TicTacToe::TicTacToe()
 	for (int row = 0; row < 3; row++)
 		for (int col = 0; col < 3; col++)
 			board[row][col] = 0;
-
+	
 	noOfMoves = 0;
 };
 
-
-// check if the move on a Tic Tac Toe is valid
-bool TicTacToe::isValidMove(int x, int y)
-{ // Add your code to complete the program
-	// check if  the position is n the board
-	if (0 <= x && x <= 2 && 0 <= y && y <= 2)
-	{
-		// check if the position on board is taken
-		if (board[x][y] == 0)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	else
-	{
-		return false;
-	}
-};
 
 
 // Add player move to the board
