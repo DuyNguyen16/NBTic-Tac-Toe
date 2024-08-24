@@ -5,16 +5,14 @@
 using namespace std;
 
 struct GameManagement {
-    void startGame(TicTacToe* db);
+    void startGame();
 };
 
-void GameManagement::startGame(TicTacToe* db) {
+void GameManagement::startGame() {
 
     cout << " -------------------------------------------\n";
 	cout << "        Nine Board Tic Tac Toe Game\n";
 	cout << " -------------------------------------------\n";
-
-    
 
 }
 

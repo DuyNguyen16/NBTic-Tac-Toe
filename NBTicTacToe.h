@@ -13,6 +13,10 @@ public:
 		currentBoard.y = 0;
 	}
 
+	void updateFocus(int x, int y) {
+		currentBoard.x = x;
+		currentBoard.y = y;
+	} 
 
 	// update the total number of moves
 	void incrementTotalNoOfMoves()
@@ -25,7 +29,13 @@ public:
 		return totalNoOfMoves;
 	}
 
-
+	int getCurrentMoveX() {
+		return currentBoard.x;
+	}
+		
+	int getCurrentMoveY() {
+		return currentBoard.y;
+	}
 
     TicTacToe* getGrid() {
         return &grid[0][0]; // Pointer to the first TicTacToe board
@@ -50,6 +60,9 @@ void NBTicTacToe::getFocusBoard(int &x, int &y) {
 		x = rand() % 3;
 		y = rand() % 3;
 	} while (checkIfBoardAvailable(x, y) == 1);
+
+	currentBoard.x = x;
+	currentBoard.y = y;
 }
 
 int NBTicTacToe::checkIfBoardAvailable(int checkX, int checkY)
