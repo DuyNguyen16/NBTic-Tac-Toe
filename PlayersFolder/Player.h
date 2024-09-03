@@ -1,7 +1,7 @@
 #ifndef Player_H_
 #define Player_H_
 
-#include "../TicTacToe.h"
+#include "../TicTacToeBoards/TicTacToe.h"
 
 class Player
 {

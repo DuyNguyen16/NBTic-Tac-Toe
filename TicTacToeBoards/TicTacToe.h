@@ -1,7 +1,7 @@
 #ifndef TicTacToe_H_
 #define TicTacToe_H_
 
-#include "Move.h"
+#include "../PlayersFolder/Move.h"
 
 #include <iostream>
 using namespace std;

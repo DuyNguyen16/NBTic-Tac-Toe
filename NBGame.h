@@ -1,9 +1,9 @@
 #ifndef NBGame_H_
 #define NBGame_H_
 
-#include "NBTicTacToe.h"
-#include "TicTacToe.h"
-#include "DisplayBoards.h"
+#include "TicTacToeBoards/NBTicTacToe.h"
+#include "TicTacToeBoards/TicTacToe.h"
+#include "TicTacToeBoards/DisplayBoards.h"
 #include "GameManagement.h"
 #include "PlayersFolder/Player.h" 
 #include "PlayersFolder/HumanPlayer.h"

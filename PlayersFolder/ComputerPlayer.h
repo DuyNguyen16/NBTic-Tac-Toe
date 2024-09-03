@@ -3,8 +3,8 @@
 
 #include "Player.h"
 #include "../GameManagement.h"
-#include "../TicTacToe.h"
-#include "../Move.h"
+#include "../TicTacToeBoards/TicTacToe.h"
+#include "Move.h"
 
 class ComputerPlayer : public Player
 {
