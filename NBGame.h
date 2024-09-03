@@ -8,6 +8,7 @@
 #include "PlayersFolder/Player.h" 
 #include "PlayersFolder/HumanPlayer.h"
 #include "PlayersFolder/ComputerPlayer.h"
+#include "PlayersFolder/RandomPlayer.h"
 
 
 using namespace std;
@@ -18,6 +19,7 @@ class NBGame
 private:
     NBTicTacToe nineBoard;
     GameManagement gameManagement;
+    Player* players[2];
 public:
     int play();
 
@@ -26,11 +28,10 @@ public:
 
 int NBGame::play() {
     DisplayBoards displayBoards(&nineBoard);
-    
-    HumanPlayer humanPlayer(-1);
-    ComputerPlayer computerPlayer(1);
-    
 
+    players[0] = new HumanPlayer(-1); // Player 1 is a human player
+    players[1] = new RandomPlayer(1); // Player 2 is a computer player
+    
     // cout << (board->getBoard()[0]);
 
     int x, y;
@@ -51,9 +52,9 @@ int NBGame::play() {
 
         // display the player turn
         if (playerTurn == 1 ) {
-            computerPlayer.displayTurn();
+            players[1]->displayTurn();
         } else {
-            humanPlayer.displayTurn();
+            players[0]->displayTurn();
         }
 
         // calculate the current board position
@@ -65,14 +66,16 @@ int NBGame::play() {
         // get the player move
         if (playerTurn == 1) {
             // get computer move and add it to board
-            computerPlayer.findBestMove(board);
-            playerMoveX = computerPlayer.getBestMoveX();
-            playerMoveY = computerPlayer.getBestMoveY();
-            board->addMove(playerMoveX, playerMoveY, computerPlayer.getPlayerNumber());
+            // computerPlayer.findBestMove(board);
+            // playerMoveX = computerPlayer.getBestMoveX();
+            // playerMoveY = computerPlayer.getBestMoveY();
+            // board->addMove(playerMoveX, playerMoveY, computerPlayer.getPlayerNumber());
+            players[1]->getMove(playerMoveX, playerMoveY, board);
+            board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
         } else {
             // get Human move and add it to board
-            humanPlayer.getMove(playerMoveX, playerMoveY, board);
-            board->addMove(playerMoveX, playerMoveY, humanPlayer.getPlayerNumber());
+            players[0]->getMove(playerMoveX, playerMoveY, board);
+            board->addMove(playerMoveX, playerMoveY, players[0]->getPlayerNumber());
         }
         
         // increment the total moves of all boards

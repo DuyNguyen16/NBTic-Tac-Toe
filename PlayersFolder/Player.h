@@ -14,37 +14,12 @@ public:
         playerNumber = x;
     }
     virtual bool getMove(int &x, int &y, TicTacToe *board) = 0;
-    bool isValidMove(int x, int y, TicTacToe *board);
+
+    virtual bool isValidMove(int x, int y, TicTacToe *board) = 0;
 
     void displayTurn();
 
     int getPlayerNumber() {return playerNumber;}
-};
-
-
-
-// check if the move on a Tic Tac Toe is valid
-bool Player::isValidMove(int x, int y, TicTacToe *board)
-{ // Add your code to complete the program
-    // check if  the position is n the board
-    int currentPos = (3 * x) + y;
-    if (0 <= currentPos && currentPos <= 8)
-    {
-        // check if the position on board is taken
-        if (board->getBoard()[currentPos] == 0)
-        {
-            board->incrementNoOfMoves();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    else
-    {
-        return false;
-    }
 };
 
 void Player::displayTurn()

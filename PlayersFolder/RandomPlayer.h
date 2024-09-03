@@ -1,17 +1,19 @@
-#ifndef HUMANPLAYER_H_
-#define HUMANPLAYER_H_
+#ifndef RANDOMPLAYER_H_
+#define RANDOMPLAYER_H_
 
 #include "Player.h"
 
-class HumanPlayer : public Player
-{
+class RandomPlayer : public Player {
 public:
-    HumanPlayer(int x) : Player(x) {};
+    RandomPlayer(int x) : Player(x) {};
     bool getMove(int &x, int &y, TicTacToe *board) override;
     bool isValidMove(int x, int y, TicTacToe *board) override;
+
+
 };
 
-bool HumanPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
+
+bool RandomPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
 {
 
     if (board->getNoOfMoves() >= 9)
@@ -21,22 +23,20 @@ bool HumanPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
 
     do
     {
-        cout << " Enter row position: ";
-        cin >> smallBoardX;
-        cout << " Enter column position: ";
-        cin >> smallBoardY;
-        cout << endl;
+        srand(time(0));
+		smallBoardX = rand() % 3;
+		smallBoardY = rand() % 3;
 
-    } while (!isValidMove(smallBoardX - 1, smallBoardY - 1, board));
+    } while (!isValidMove(smallBoardX, smallBoardY, board));
     // Enter move on current board
-    smallBoardX = smallBoardX - 1;
-    smallBoardY = smallBoardY - 1;
+    smallBoardX = smallBoardX;
+    smallBoardY = smallBoardY;
     return true;
 };
 
 
 // check if the move on a Tic Tac Toe is valid
-bool HumanPlayer::isValidMove(int x, int y, TicTacToe *board)
+bool RandomPlayer::isValidMove(int x, int y, TicTacToe *board)
 { // Add your code to complete the program
     // check if  the position is n the board
     int currentPos = (3 * x) + y;

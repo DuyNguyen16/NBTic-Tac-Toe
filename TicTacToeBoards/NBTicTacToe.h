@@ -56,7 +56,7 @@ private:
 void NBTicTacToe::getRandomFocusBoard(int &x, int &y) {
 		do
 	{
-		srand(time(nullptr));
+		srand(time(0));
 		x = rand() % 3;
 		y = rand() % 3;
 	} while (checkIfBoardAvailable(x, y) == 1);
