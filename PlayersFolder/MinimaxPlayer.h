@@ -28,12 +28,13 @@ public:
 // Get the player Move
 int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber)
 {
-    int biggestValue;
+    int bestValue;
     if (playerNumber == 1) {
-        biggestValue = -100000;
+        bestValue = -100000;
     } else {
-        biggestValue = -100000;
+        bestValue = 100000;
     }
+    cout << playerNumber;
 
     // check if the current board is empty
     if (board->getNoOfMoves() == 0)
@@ -59,26 +60,30 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board,
                 if (board->getBoard()[cal] == 0)
                 {
                     board->addMove(row, col, playerNumber);
-
+                    int tempValue;
                     // get the value of the move
-                    int tempValue = minimum(board);
-
+                    if (playerNumber == 1) {
+                        tempValue = minimum(board);
+                    }
+                    else {
+                        tempValue = maximum(board);
+                    }
                     // restore the board
                     board->addMove(row, col, 0);
                     
                     if (playerNumber == 1) {
                         // check if tempValue is bigger (maximising)
-                        if (tempValue > biggestValue)
+                        if (tempValue > bestValue)
                         {
-                            biggestValue = tempValue;
+                            bestValue = tempValue;
                             smallBoardX = row;
                             smallBoardY = col;
                         }
                     } else {
-                        // check if tempValue is bigger (maximising)
-                        if (tempValue < biggestValue)
+                        // check if tempValue is bigger (minimising)
+                        if (tempValue < bestValue)
                         {
-                            biggestValue = tempValue;
+                            bestValue = tempValue;
                             smallBoardX = row;
                             smallBoardY = col;
                         }
