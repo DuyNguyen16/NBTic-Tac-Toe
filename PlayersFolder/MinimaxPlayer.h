@@ -34,7 +34,6 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board,
     } else {
         bestValue = 100000;
     }
-    cout << playerNumber;
 
     // check if the current board is empty
     if (board->getNoOfMoves() == 0)
