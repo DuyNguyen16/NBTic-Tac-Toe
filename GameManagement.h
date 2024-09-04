@@ -5,26 +5,38 @@
 using namespace std;
 
 struct GameManagement {
-    void startGame();
+    int startGame();
     int gameStatus(TicTacToe *board);
     int displayWinner(int playerNumber);
     void swapPlayer(int &playerTurn);
 };
 
-void GameManagement::startGame() {
+int GameManagement::startGame() {
 
-    cout << " -------------------------------------------\n";
-	cout << "        Nine Board Tic Tac Toe Game\n";
-	cout << " -------------------------------------------\n";
+    int mode = 0;
+    while (true) {
+        cout << " -------------------------------------------\n";
+        cout << "        Nine Board Tic Tac Toe Game\n";
+        cout << " -------------------------------------------\n";
+        cout << "Select Game Mode: " << endl;
+        cout << " -------------------------------------------\n";
+        cout << "1. Human vs Human." << endl;
+        cout << "2. Human vs Bot (Minimax)." << endl;
+        cout << "3. Human vs Bot (Random)." << endl;
+        cout << " -------------------------------------------\n";
+        cout << "Game Mode Number: ";
+        cin >> mode;
+        if (mode > 0 && mode < 4) {
+            break;
+        }
+    }
 
+    return mode;
 }
 
 int GameManagement::gameStatus(TicTacToe *board) {
     // check if board is full
-	if (board->getNoOfMoves() >= 9) {
-        displayWinner(2);
-		return 2;
-    }
+
     // cout << board->getBoard()[0];
     // Check first row
     if (board->getBoard()[0] == board->getBoard()[1] && board->getBoard()[1] == board->getBoard()[2]) {
@@ -114,6 +126,11 @@ int GameManagement::gameStatus(TicTacToe *board) {
             displayWinner(-1);
             return -1;
         }
+    }
+
+    if (board->getNoOfMoves() >= 9) {
+        displayWinner(2);
+		return 2;
     }
 
 	return 0;

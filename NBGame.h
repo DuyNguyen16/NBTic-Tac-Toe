@@ -9,8 +9,6 @@
 #include "PlayersFolder/HumanPlayer.h"
 #include "PlayersFolder/ComputerPlayer.h"
 #include "PlayersFolder/RandomPlayer.h"
-#include "PlayersFolder/MinimaxPlayer.h"
-
 
 
 using namespace std;
@@ -35,10 +33,25 @@ int NBGame::play() {
     players[1] = new ComputerPlayer(1); // Player 2 is a computer player
 
 
+
     int x, y;
-    // playerX.getMove(x, y, board0);
-    // board0->addMove(x,y, 1);
-    gameManagement.startGame();
+
+    int mode = gameManagement.startGame();
+
+    switch (mode) {
+        case 1:
+            players[0] = new HumanPlayer(-1); // Player 1 is a human player
+            players[1] = new HumanPlayer(1); // Player 2 is a computer player
+            break;
+        case 2:
+            players[0] = new HumanPlayer(-1); // Player 1 is a human player
+            players[1] = new ComputerPlayer(1); // Player 2 is a computer player
+            break;
+        case 3:
+            players[0] = new HumanPlayer(-1); // Player 1 is a human player
+            players[1] = new RandomPlayer(1); // Player 2 is a computer player
+    }
+
     nineBoard.getRandomFocusBoard(x, y);
     displayBoards.displayBoards(x,y);
 
