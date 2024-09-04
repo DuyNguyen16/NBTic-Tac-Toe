@@ -5,13 +5,13 @@
 #include "../TicTacToeBoards/TicTacToe.h"
 #include "Move.h"
 
-class ComputerPlayer : public Player
+class MinimaxPlayer : public Player
 {
 private:
     Move move;
 
 public:
-    ComputerPlayer(int x) : Player(x) {};
+    MinimaxPlayer(int x) : Player(x) {};
 
     bool isValidMove(int x, int y, TicTacToe *board) override
     {
@@ -26,7 +26,7 @@ public:
 };
 
 // Get the player Move
-int ComputerPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
+int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
 {
     int biggestValue = -100000;
 
@@ -78,7 +78,7 @@ int ComputerPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board
 }
 
 // Maximising Player
-int ComputerPlayer::maxValue(TicTacToe *board)
+int MinimaxPlayer::maxValue(TicTacToe *board)
 {
     int biggestValue = -100000;
 
@@ -120,7 +120,7 @@ int ComputerPlayer::maxValue(TicTacToe *board)
 }
 
 // Minimising player
-int ComputerPlayer::minValue(TicTacToe *board)
+int MinimaxPlayer::minValue(TicTacToe *board)
 {
     int smallestValue = 100000;
 
@@ -162,7 +162,7 @@ int ComputerPlayer::minValue(TicTacToe *board)
 }
 
 // check the game status
-int ComputerPlayer::gameStatus(TicTacToe *board)
+int MinimaxPlayer::gameStatus(TicTacToe *board)
 {
     // Check first row
     if (board->getBoard()[0] == board->getBoard()[1] && board->getBoard()[1] == board->getBoard()[2])

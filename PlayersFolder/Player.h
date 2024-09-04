@@ -20,6 +20,7 @@ public:
     void displayTurn();
 
     int getPlayerNumber() {return playerNumber;}
+
 };
 
 void Player::displayTurn()

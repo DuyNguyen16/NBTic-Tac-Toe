@@ -7,7 +7,7 @@
 #include "GameManagement.h"
 #include "PlayersFolder/Player.h" 
 #include "PlayersFolder/HumanPlayer.h"
-#include "PlayersFolder/ComputerPlayer.h"
+#include "PlayersFolder/MinimaxPlayer.h"
 #include "PlayersFolder/RandomPlayer.h"
 
 
@@ -29,11 +29,6 @@ public:
 int NBGame::play() {
     DisplayBoards displayBoards(&nineBoard);
 
-    players[0] = new HumanPlayer(-1); // Player 1 is a human player
-    players[1] = new ComputerPlayer(1); // Player 2 is a computer player
-
-
-
     int x, y;
 
     int mode = gameManagement.startGame();
@@ -46,10 +41,10 @@ int NBGame::play() {
             players[1] = new HumanPlayer(1);
             break;
         case 2:
-        // Player 1 is a human player
+            // Player 1 is a human player
             players[0] = new HumanPlayer(-1);
             // Player 2 is a computer player
-            players[1] = new ComputerPlayer(1);
+            players[1] = new MinimaxPlayer(1);
             break;
         case 3:
             // Player 1 is a human player
@@ -60,7 +55,7 @@ int NBGame::play() {
             // Player 1 is a computer player
             players[0] = new RandomPlayer(-1);
             // Player 2 is a computer player
-            players[1] = new ComputerPlayer(1);
+            players[1] = new MinimaxPlayer(1);
     }
 
     nineBoard.getRandomFocusBoard(x, y);
@@ -123,6 +118,9 @@ int NBGame::play() {
         // swap the player turn
         gameManagement.swapPlayer(playerTurn);
     }
+
+    delete players[0];
+    delete players[1];
     return 0;
 };
 
