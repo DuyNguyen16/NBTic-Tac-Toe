@@ -40,22 +40,27 @@ int NBGame::play() {
 
     switch (mode) {
         case 1:
-            players[0] = new HumanPlayer(-1); // Player 1 is a human player
-            players[1] = new HumanPlayer(1); // Player 2 is a computer player
+            // Player 1 is a human player
+            players[0] = new HumanPlayer(-1);
+            // Player 1 is a human player
+            players[1] = new HumanPlayer(1);
             break;
         case 2:
-            players[0] = new HumanPlayer(-1); // Player 1 is a human player
-            players[1] = new ComputerPlayer(1); // Player 2 is a computer player
+        // Player 1 is a human player
+            players[0] = new HumanPlayer(-1);
+            // Player 2 is a computer player
+            players[1] = new ComputerPlayer(1);
             break;
         case 3:
-            players[0] = new HumanPlayer(-1); // Player 1 is a human player
-            players[1] = new RandomPlayer(1); // Player 2 is a computer player
+            // Player 1 is a human player
+            players[0] = new HumanPlayer(-1);
+            // Player 2 is a computer player
+            players[1] = new RandomPlayer(1);
     }
 
     nineBoard.getRandomFocusBoard(x, y);
     displayBoards.displayBoards(x,y);
 
-    // cout << board0->getNoOfMoves();
     // player turn
     int playerTurn = 1;
 
@@ -64,30 +69,19 @@ int NBGame::play() {
         int playerMoveX;
         int playerMoveY;
 
-        // display the player turn
-        if (playerTurn == 1 ) {
-            players[1]->displayTurn();
-        } else {
-            players[0]->displayTurn();
-        }
-
-        // calculate the current board position
-        int boardPosition = (3 * nineBoard.getCurrentMoveX()) + nineBoard.getCurrentMoveY();
+        // calculate the current board position on the grid
+        int boardPositionOnGrid = (3 * nineBoard.getCurrentMoveX()) + nineBoard.getCurrentMoveY();
 
         // get the board
-        TicTacToe* board = &nineBoard.getGrid()[boardPosition];
+        TicTacToe* board = &nineBoard.getGrid()[boardPositionOnGrid];
         
         // get the player move
         if (playerTurn == 1) {
-            
+            players[1]->displayTurn();
             players[1]->getMove(playerMoveX, playerMoveY, board);
             board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
-            // players[1]->getMove(playerMoveX, playerMoveY, board);
-            // board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
         } else {
-            // players[1]->getMove(playerMoveX, playerMoveY, board);
-            // board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
-            // get Human move and add it to board
+            players[0]->displayTurn();
             players[0]->getMove(playerMoveX, playerMoveY, board);
             board->addMove(playerMoveX, playerMoveY, players[0]->getPlayerNumber());
         }
