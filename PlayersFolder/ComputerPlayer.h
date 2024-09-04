@@ -50,22 +50,24 @@ bool ComputerPlayer::isValidMove(int x, int y, TicTacToe *board)
 { // Add your code to complete the program
     // check if  the position is n the board
     int currentPos = (3 * x) + y;
-    if (0 <= currentPos && currentPos <= 8)
-    {
-        // check if the position on board is taken
-        if (board->getBoard()[currentPos] == 0)
+    if (x >= 0 && x < 3 && y >= 0 && y < 3) {
+        if (0 <= currentPos && currentPos <= 8)
         {
-            board->incrementNoOfMoves();
-            return true;
+            // check if the position on board is taken
+            if (board->getBoard()[currentPos] == 0)
+            {
+                board->incrementNoOfMoves();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
             return false;
         }
-    }
-    else
-    {
-        return false;
     }
 };
 

@@ -8,7 +8,7 @@ struct GameManagement {
     void startGame();
     int gameStatus(TicTacToe *board);
     int displayWinner(int playerNumber);
-    int checkRows(TicTacToe *board);
+    void swapPlayer(int &playerTurn);
 };
 
 void GameManagement::startGame() {
@@ -144,5 +144,15 @@ int GameManagement::displayWinner(int playerNumber) {
 
 	return 0;
 }
+
+    void GameManagement::swapPlayer(int &playerTurn) {
+    if (playerTurn == 1)
+			playerTurn = -1;
+		else
+		{
+			playerTurn = 1;
+		}
+    };
+
 
 #endif

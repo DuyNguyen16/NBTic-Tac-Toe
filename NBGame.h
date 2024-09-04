@@ -111,12 +111,7 @@ int NBGame::play() {
         }
         
         // swap the player turn
-		if (playerTurn == 1)
-			playerTurn = -1;
-		else
-		{
-			playerTurn = 1;
-		}
+        gameManagement.swapPlayer(playerTurn);
     }
     return 0;
 };
