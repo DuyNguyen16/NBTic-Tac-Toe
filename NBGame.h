@@ -75,12 +75,14 @@ int NBGame::play() {
         // get the board
         TicTacToe* board = &nineBoard.getGrid()[boardPositionOnGrid];
         
-        // get the player move
+        // checkk which player turn it is
         if (playerTurn == 1) {
+            // get the player move and add it to the board
             players[1]->displayTurn();
             players[1]->getMove(playerMoveX, playerMoveY, board);
             board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
         } else {
+            // get the player move and add it to the board
             players[0]->displayTurn();
             players[0]->getMove(playerMoveX, playerMoveY, board);
             board->addMove(playerMoveX, playerMoveY, players[0]->getPlayerNumber());

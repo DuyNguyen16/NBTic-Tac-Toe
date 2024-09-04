@@ -13,22 +13,24 @@ private:
 public:
     ComputerPlayer(int x) : Player(x) {};
 
-    bool isValidMove(int x, int y, TicTacToe *board) override {
+    bool isValidMove(int x, int y, TicTacToe *board) override
+    {
         cout << "yes";
         return true;
     };
+
     int getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board) override;
     int minValue(TicTacToe *board);
     int maxValue(TicTacToe *board);
     int gameStatus(TicTacToe *board);
-
-
 };
 
+// Get the player Move
 int ComputerPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
 {
-    int bestVal = -100000;
+    int biggestValue = -100000;
 
+    // check if the current board is empty
     if (board->getNoOfMoves() == 0)
     {
         // randomised select a cell on a board
@@ -41,6 +43,7 @@ int ComputerPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board
     }
     else
     {
+        // Loop through each cells in the board
         for (int row = 0; row < 3; row++)
         {
             for (int col = 0; col < 3; col++)
@@ -49,16 +52,19 @@ int ComputerPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board
 
                 // check for empty cell
                 if (board->getBoard()[cal] == 0)
-                {  
+                {
                     board->addMove(row, col, 1);
 
-                    int value = minValue(board);
+                    // get the value of the move
+                    int tempValue = minValue(board);
 
+                    // restore the board
                     board->addMove(row, col, 0);
 
-                    if (value > bestVal)
+                    // check if tempValue is bigger (maximising)
+                    if (tempValue > biggestValue)
                     {
-                        bestVal = value;
+                        biggestValue = tempValue;
                         smallBoardX = row;
                         smallBoardY = col;
                     }
@@ -71,16 +77,19 @@ int ComputerPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board
     return 0;
 }
 
-//  X player
+// Maximising Player
 int ComputerPlayer::maxValue(TicTacToe *board)
 {
-    int bestMinvalue = -100000;
+    int biggestValue = -100000;
 
+    // check for the current board game status
     int status = gameStatus(board);
-    if (status != 2) {
-        return status * (1 + (9 - board->getNoOfMoves()));
+    if (status != 2)
+    {
+        return (1 + (9 - board->getNoOfMoves())) * status;
     }
 
+    // Loop through each cells in the board
     for (int row = 0; row < 3; row++)
     {
         for (int col = 0; col < 3; col++)
@@ -92,33 +101,37 @@ int ComputerPlayer::maxValue(TicTacToe *board)
                 board->addMove(row, col, 1);
                 board->incrementNoOfMoves();
 
-                int value = minValue(board);
+                // get the value of the move
+                int tempValue = minValue(board);
 
                 board->decrementNoOfMoves();
                 board->addMove(row, col, 0);
 
-                if (value > bestMinvalue)
+                // maximising the value
+                if (tempValue > biggestValue)
                 {
-                    bestMinvalue = value;
+                    biggestValue = tempValue;
                 }
             }
         }
     }
 
-    return bestMinvalue;
+    return biggestValue;
 }
 
-// O player
+// Minimising player
 int ComputerPlayer::minValue(TicTacToe *board)
 {
-    int bestMinvalue = 100000;
+    int smallestValue = 100000;
 
+    // check for current board game status
     int status = gameStatus(board);
-    if (status != 2) {
-
-        return status * (1 + (9 - board->getNoOfMoves()));
+    if (status != 2)
+    {
+        return (1 + (9 - board->getNoOfMoves())) * status;
     }
 
+    // Loop through each cell in the board
     for (int row = 0; row < 3; row++)
     {
         for (int col = 0; col < 3; col++)
@@ -128,27 +141,29 @@ int ComputerPlayer::minValue(TicTacToe *board)
             if (board->getBoard()[cal] == 0)
             {
                 board->addMove(row, col, -1);
-
                 board->incrementNoOfMoves();
-                int value = maxValue(board);
+
+                // get the value of the move
+                int tempValue = maxValue(board);
 
                 board->decrementNoOfMoves();
                 board->addMove(row, col, 0);
 
-                if (value < bestMinvalue)
+                // Minimising the value
+                if (tempValue < smallestValue)
                 {
-                    bestMinvalue = value;
+                    smallestValue = tempValue;
                 }
             }
         }
     }
 
-    return bestMinvalue;
+    return smallestValue;
 }
 
+// check the game status
 int ComputerPlayer::gameStatus(TicTacToe *board)
 {
-    // cout << board->getBoard()[0];
     // Check first row
     if (board->getBoard()[0] == board->getBoard()[1] && board->getBoard()[1] == board->getBoard()[2])
     {
