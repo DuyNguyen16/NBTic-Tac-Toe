@@ -6,19 +6,19 @@
 class RandomPlayer : public Player {
 public:
     RandomPlayer(int x) : Player(x) {};
-    bool getMove(int &x, int &y, TicTacToe *board) override;
+    int getMove(int &x, int &y, TicTacToe *board) override;
     bool isValidMove(int x, int y, TicTacToe *board) override;
 
 
 };
 
 
-bool RandomPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
+int RandomPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
 {
 
     if (board->getNoOfMoves() >= 9)
     {
-        return false;
+        return 1;
     }
 
     do
@@ -31,7 +31,7 @@ bool RandomPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
     // Enter move on current board
     smallBoardX = smallBoardX;
     smallBoardY = smallBoardY;
-    return true;
+    return 0;
 };
 
 

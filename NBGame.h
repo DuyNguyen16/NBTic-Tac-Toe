@@ -32,9 +32,7 @@ int NBGame::play() {
     DisplayBoards displayBoards(&nineBoard);
 
     players[0] = new HumanPlayer(-1); // Player 1 is a human player
-    players[1] = new RandomPlayer(1); // Player 2 is a computer player
-
-    MinimaxPlayer computerPlayer(1);
+    players[1] = new ComputerPlayer(1); // Player 2 is a computer player
 
 
     int x, y;
@@ -69,10 +67,8 @@ int NBGame::play() {
         // get the player move
         if (playerTurn == 1) {
             
-            computerPlayer.minimax(board);
-            playerMoveX = computerPlayer.getBestMoveX();
-            playerMoveY = computerPlayer.getBestMoveY();
-            board->addMove(playerMoveX, playerMoveY, computerPlayer.getPlayerNumber());
+            players[1]->getMove(playerMoveX, playerMoveY, board);
+            board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
             // players[1]->getMove(playerMoveX, playerMoveY, board);
             // board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
         } else {
