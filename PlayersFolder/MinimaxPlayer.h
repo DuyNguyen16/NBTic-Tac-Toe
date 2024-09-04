@@ -24,8 +24,8 @@ public:
     };
 
     int minimax(TicTacToe *board);
-    int minValue(TicTacToe *board, int &depth);
-    int maxValue(TicTacToe *board, int &depth);
+    int minValue(TicTacToe *board);
+    int maxValue(TicTacToe *board);
     int gameStatus(TicTacToe *board);
 
     int getBestMoveX()
@@ -45,9 +45,7 @@ public:
 
 int MinimaxPlayer::minimax(TicTacToe *board)
 {
-
     int bestVal = -100000;
-    int bestDepth = 0;
 
     if (board->getNoOfMoves() == 0)
     {
@@ -68,17 +66,16 @@ int MinimaxPlayer::minimax(TicTacToe *board)
 
                 // check for empty cell
                 if (board->getBoard()[cal] == 0)
-                {
-                    int tempDepth = 0;   
+                {  
                     board->addMove(row, col, 1);
 
-                    int value = minValue(board, tempDepth);
+                    int value = minValue(board);
 
                     board->addMove(row, col, 0);
 
-                    if (tempDepth > bestDepth)
+                    if (value > bestVal)
                     {
-                        bestDepth = tempDepth;
+                        bestVal = value;
                         setBestMoves(row, col);
                     }
                 }
@@ -91,14 +88,13 @@ int MinimaxPlayer::minimax(TicTacToe *board)
 }
 
 //  X player
-int MinimaxPlayer::maxValue(TicTacToe *board, int &depth)
+int MinimaxPlayer::maxValue(TicTacToe *board)
 {
     int bestMinvalue = -100000;
 
     int status = gameStatus(board);
     if (status != 2) {
-        depth = status * (1 + (9 - board->getNoOfMoves()));
-        return status;
+        return status * (1 + (9 - board->getNoOfMoves()));
     }
 
     for (int row = 0; row < 3; row++)
@@ -112,7 +108,7 @@ int MinimaxPlayer::maxValue(TicTacToe *board, int &depth)
                 board->addMove(row, col, 1);
                 board->incrementNoOfMoves();
 
-                int value = minValue(board, depth);
+                int value = minValue(board);
 
                 board->decrementNoOfMoves();
                 board->addMove(row, col, 0);
@@ -129,14 +125,14 @@ int MinimaxPlayer::maxValue(TicTacToe *board, int &depth)
 }
 
 // O player
-int MinimaxPlayer::minValue(TicTacToe *board, int &depth)
+int MinimaxPlayer::minValue(TicTacToe *board)
 {
     int bestMinvalue = 100000;
 
     int status = gameStatus(board);
     if (status != 2) {
-        depth = status * (1 + (9 - board->getNoOfMoves()));
-        return status;
+
+        return status * (1 + (9 - board->getNoOfMoves()));
     }
 
     for (int row = 0; row < 3; row++)
@@ -150,7 +146,7 @@ int MinimaxPlayer::minValue(TicTacToe *board, int &depth)
                 board->addMove(row, col, -1);
 
                 board->incrementNoOfMoves();
-                int value = maxValue(board, depth);
+                int value = maxValue(board);
 
                 board->decrementNoOfMoves();
                 board->addMove(row, col, 0);
