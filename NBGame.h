@@ -56,6 +56,11 @@ int NBGame::play() {
             players[0] = new HumanPlayer(-1);
             // Player 2 is a computer player
             players[1] = new RandomPlayer(1);
+        case 4:
+            // Player 1 is a computer player
+            players[0] = new RandomPlayer(-1);
+            // Player 2 is a computer player
+            players[1] = new ComputerPlayer(1);
     }
 
     nineBoard.getRandomFocusBoard(x, y);
