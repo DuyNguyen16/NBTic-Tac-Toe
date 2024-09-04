@@ -51,11 +51,13 @@ int NBGame::play() {
             players[0] = new HumanPlayer(-1);
             // Player 2 is a computer player
             players[1] = new RandomPlayer(1);
+            break;
         case 4:
             // Player 1 is a computer player
             players[0] = new RandomPlayer(-1);
             // Player 2 is a computer player
             players[1] = new MinimaxPlayer(1);
+            break;
         case 5:
             // Player 1 is a computer player
             players[0] = new MinimaxPlayer(-1);
@@ -73,7 +75,7 @@ int NBGame::play() {
         // player moves
         int playerMoveX;
         int playerMoveY;
-
+        
         this_thread::sleep_for(chrono::milliseconds(1000)); // Sleep for 1000 milliseconds (1 second)
 
         // calculate the current board position on the grid
