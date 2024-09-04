@@ -6,14 +6,22 @@
 #include "../TicTacToeBoards/TicTacToe.h"
 #include "Move.h"
 
-class ComputerPlayer : public Player
+class ComputerPlayer
 {
 private:
     GameManagement gameMangement;
     Move move;
-
+    int playerNumber;
 public:
-    ComputerPlayer(int x) : Player(x) {};
+        ComputerPlayer(int x)
+    {
+        playerNumber = x;
+    }
+
+    int getPlayerNumber() {
+        return playerNumber;
+    }
+
     void findBestMove(TicTacToe *board);
     int minimax(bool isMaxiTurn, TicTacToe *board);
 
@@ -34,33 +42,8 @@ public:
 
     int gameStatus(TicTacToe *board);
 
-    bool getMove(int &x, int &y, TicTacToe *board) override;
-    bool isValidMove(int x, int y, TicTacToe *board) override;
+    bool isValidMove(int x, int y, TicTacToe *board);
 };
-
-bool ComputerPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
-{
-
-    if (board->getNoOfMoves() >= 9)
-    {
-        return false;
-    }
-
-    do
-    {
-        cout << " Enter row position: ";
-        cin >> smallBoardX;
-        cout << " Enter column position: ";
-        cin >> smallBoardY;
-        cout << endl;
-
-    } while (!isValidMove(smallBoardX - 1, smallBoardY - 1, board));
-    // Enter move on current board
-    smallBoardX = smallBoardX - 1;
-    smallBoardY = smallBoardY - 1;
-    return true;
-};
-
 
 // check if the move on a Tic Tac Toe is valid
 bool ComputerPlayer::isValidMove(int x, int y, TicTacToe *board)
@@ -207,20 +190,18 @@ void ComputerPlayer::findBestMove(TicTacToe *board)
     if (getBestMoveX() == 0 && getBestMoveY() == 0 && board->getNoOfMoves() == 0)
     {
         // randomised select a cell on a board
-        srand(time(nullptr));
+        srand(time(0));
         int x = rand() % 3;
         int y = rand() % 3;
 
         setBestMoves(x, y);
     }
+
+    board->incrementNoOfMoves();
 }
 
 
 int ComputerPlayer::gameStatus(TicTacToe *board) {
-    // check if board is full
-	if (board->getNoOfMoves() >= 9) {
-		return 2;
-    }
     // cout << board->getBoard()[0];
     // Check first row
     if (board->getBoard()[0] == board->getBoard()[1] && board->getBoard()[1] == board->getBoard()[2]) {
@@ -312,7 +293,12 @@ int ComputerPlayer::gameStatus(TicTacToe *board) {
         }
     }
 
-	return 0;
+        // check if board is full
+	if (board->getNoOfMoves() >= 9) {
+		return 0;
+    }
+
+	return 2;
 }
 
 #endif

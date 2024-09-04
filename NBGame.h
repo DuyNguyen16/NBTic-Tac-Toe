@@ -9,6 +9,8 @@
 #include "PlayersFolder/HumanPlayer.h"
 #include "PlayersFolder/ComputerPlayer.h"
 #include "PlayersFolder/RandomPlayer.h"
+#include "PlayersFolder/MinimaxPlayer.h"
+
 
 
 using namespace std;
@@ -31,8 +33,9 @@ int NBGame::play() {
 
     players[0] = new HumanPlayer(-1); // Player 1 is a human player
     players[1] = new RandomPlayer(1); // Player 2 is a computer player
-    
-    // cout << (board->getBoard()[0]);
+
+    MinimaxPlayer computerPlayer(1);
+
 
     int x, y;
     // playerX.getMove(x, y, board0);
@@ -65,14 +68,16 @@ int NBGame::play() {
         
         // get the player move
         if (playerTurn == 1) {
-            // get computer move and add it to board
-            // computerPlayer.findBestMove(board);
-            // playerMoveX = computerPlayer.getBestMoveX();
-            // playerMoveY = computerPlayer.getBestMoveY();
-            // board->addMove(playerMoveX, playerMoveY, computerPlayer.getPlayerNumber());
-            players[1]->getMove(playerMoveX, playerMoveY, board);
-            board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
+            
+            computerPlayer.minimax(board);
+            playerMoveX = computerPlayer.getBestMoveX();
+            playerMoveY = computerPlayer.getBestMoveY();
+            board->addMove(playerMoveX, playerMoveY, computerPlayer.getPlayerNumber());
+            // players[1]->getMove(playerMoveX, playerMoveY, board);
+            // board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
         } else {
+            // players[1]->getMove(playerMoveX, playerMoveY, board);
+            // board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
             // get Human move and add it to board
             players[0]->getMove(playerMoveX, playerMoveY, board);
             board->addMove(playerMoveX, playerMoveY, players[0]->getPlayerNumber());

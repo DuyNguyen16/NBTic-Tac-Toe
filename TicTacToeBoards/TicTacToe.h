@@ -33,6 +33,11 @@ public:
 		noOfMoves += 1;
 	};
 
+		void decrementNoOfMoves()
+	{
+		noOfMoves -= 1;
+	};
+
 	int *getBoard() {
 		return &board[0][0]; // return a pointer pointed at the first element of the board
 	};
