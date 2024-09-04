@@ -56,6 +56,11 @@ int NBGame::play() {
             players[0] = new RandomPlayer(-1);
             // Player 2 is a computer player
             players[1] = new MinimaxPlayer(1);
+        case 5:
+            // Player 1 is a computer player
+            players[0] = new MinimaxPlayer(-1);
+            // Player 2 is a computer player
+            players[1] = new MinimaxPlayer(1);
     }
 
     nineBoard.getRandomFocusBoard(x, y);
@@ -69,6 +74,8 @@ int NBGame::play() {
         int playerMoveX;
         int playerMoveY;
 
+        this_thread::sleep_for(chrono::milliseconds(1000)); // Sleep for 1000 milliseconds (1 second)
+
         // calculate the current board position on the grid
         int boardPositionOnGrid = (3 * nineBoard.getCurrentMoveX()) + nineBoard.getCurrentMoveY();
 
@@ -79,12 +86,12 @@ int NBGame::play() {
         if (playerTurn == 1) {
             // get the player move and add it to the board
             players[1]->displayTurn();
-            players[1]->getMove(playerMoveX, playerMoveY, board);
+            players[1]->getMove(playerMoveX, playerMoveY, board, players[1]->getPlayerNumber());
             board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
         } else {
             // get the player move and add it to the board
             players[0]->displayTurn();
-            players[0]->getMove(playerMoveX, playerMoveY, board);
+            players[0]->getMove(playerMoveX, playerMoveY, board, players[0]->getPlayerNumber());
             board->addMove(playerMoveX, playerMoveY, players[0]->getPlayerNumber());
         }
         

@@ -21,13 +21,14 @@ int GameManagement::startGame() {
         cout << "Select Game Mode: " << endl;
         cout << " -------------------------------------------\n";
         cout << "1. Human vs Human." << endl;
-        cout << "2. Human vs Bot (Minimax)." << endl;
+        cout << "2. Human vs AI (Minimax)." << endl;
         cout << "3. Human vs Bot (Random)." << endl;
-        cout << "4. Bot (Minimax) vs Bot (Random)." << endl;
+        cout << "4. AI (Minimax) vs Bot (Random)." << endl;
+        cout << "5. AI (Minimax) vs AI (Minimax)." << endl;
         cout << " -------------------------------------------\n";
         cout << "Game Mode Number: ";
         cin >> mode;
-        if (mode > 0 && mode < 5) {
+        if (mode > 0 && mode < 6) {
             break;
         }
     }

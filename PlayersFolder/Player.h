@@ -13,7 +13,7 @@ public:
     {
         playerNumber = x;
     }
-    virtual int getMove(int &x, int &y, TicTacToe *board) = 0;
+    virtual int getMove(int &x, int &y, TicTacToe *board, int playerNumber) = 0;
 
     virtual bool isValidMove(int x, int y, TicTacToe *board) = 0;
 

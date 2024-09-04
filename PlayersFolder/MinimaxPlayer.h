@@ -19,14 +19,14 @@ public:
         return true;
     };
 
-    int getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board) override;
-    int minValue(TicTacToe *board);
-    int maxValue(TicTacToe *board);
+    int getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber) override;
+    int minimum(TicTacToe *board);
+    int maximum(TicTacToe *board);
     int gameStatus(TicTacToe *board);
 };
 
 // Get the player Move
-int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
+int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber)
 {
     int biggestValue = -100000;
 
@@ -53,10 +53,10 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
                 // check for empty cell
                 if (board->getBoard()[cal] == 0)
                 {
-                    board->addMove(row, col, 1);
+                    board->addMove(row, col, playerNumber);
 
                     // get the value of the move
-                    int tempValue = minValue(board);
+                    int tempValue = minimum(board);
 
                     // restore the board
                     board->addMove(row, col, 0);
@@ -78,7 +78,7 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board)
 }
 
 // Maximising Player
-int MinimaxPlayer::maxValue(TicTacToe *board)
+int MinimaxPlayer::maximum(TicTacToe *board)
 {
     int biggestValue = -100000;
 
@@ -102,7 +102,7 @@ int MinimaxPlayer::maxValue(TicTacToe *board)
                 board->incrementNoOfMoves();
 
                 // get the value of the move
-                int tempValue = minValue(board);
+                int tempValue = minimum(board);
 
                 board->decrementNoOfMoves();
                 board->addMove(row, col, 0);
@@ -120,7 +120,7 @@ int MinimaxPlayer::maxValue(TicTacToe *board)
 }
 
 // Minimising player
-int MinimaxPlayer::minValue(TicTacToe *board)
+int MinimaxPlayer::minimum(TicTacToe *board)
 {
     int smallestValue = 100000;
 
@@ -144,7 +144,7 @@ int MinimaxPlayer::minValue(TicTacToe *board)
                 board->incrementNoOfMoves();
 
                 // get the value of the move
-                int tempValue = maxValue(board);
+                int tempValue = maximum(board);
 
                 board->decrementNoOfMoves();
                 board->addMove(row, col, 0);
