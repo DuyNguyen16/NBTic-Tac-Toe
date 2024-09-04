@@ -2,6 +2,10 @@
 #define GameManagement_H_
 
 #include <iostream>
+#include "PlayersFolder/HumanPlayer.h"
+#include "PlayersFolder/RandomPlayer.h"
+#include "PlayersFolder/MinimaxPlayer.h"
+#include "PlayersFolder/Player.h"
 using namespace std;
 
 struct GameManagement {
@@ -9,7 +13,42 @@ struct GameManagement {
     int gameStatus(TicTacToe *board);
     int displayWinner(int playerNumber);
     void swapPlayer(int &playerTurn);
+    void selectMode(Player *players[], int mode);
 };
+
+void GameManagement::selectMode(Player *players[], int mode) {
+    switch (mode) {
+        case 1:
+            // Player 1 is a human player
+            players[0] = new HumanPlayer(-1);
+            // Player 1 is a human player
+            players[1] = new HumanPlayer(1);
+            break;
+        case 2:
+            // Player 1 is a human player
+            players[0] = new HumanPlayer(-1);
+            // Player 2 is a computer player
+            players[1] = new MinimaxPlayer(1);
+            break;
+        case 3:
+            // Player 1 is a human player
+            players[0] = new HumanPlayer(-1);
+            // Player 2 is a computer player
+            players[1] = new RandomPlayer(1);
+            break;
+        case 4:
+            // Player 1 is a computer player
+            players[0] = new RandomPlayer(-1);
+            // Player 2 is a computer player
+            players[1] = new MinimaxPlayer(1);
+            break;
+        case 5:
+            // Player 1 is a computer player
+            players[0] = new MinimaxPlayer(-1);
+            // Player 2 is a computer player
+            players[1] = new MinimaxPlayer(1);
+    }
+}
 
 int GameManagement::startGame() {
 

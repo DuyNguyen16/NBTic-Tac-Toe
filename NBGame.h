@@ -33,37 +33,7 @@ int NBGame::play() {
 
     int mode = gameManagement.startGame();
 
-    switch (mode) {
-        case 1:
-            // Player 1 is a human player
-            players[0] = new HumanPlayer(-1);
-            // Player 1 is a human player
-            players[1] = new HumanPlayer(1);
-            break;
-        case 2:
-            // Player 1 is a human player
-            players[0] = new HumanPlayer(-1);
-            // Player 2 is a computer player
-            players[1] = new MinimaxPlayer(1);
-            break;
-        case 3:
-            // Player 1 is a human player
-            players[0] = new HumanPlayer(-1);
-            // Player 2 is a computer player
-            players[1] = new RandomPlayer(1);
-            break;
-        case 4:
-            // Player 1 is a computer player
-            players[0] = new RandomPlayer(-1);
-            // Player 2 is a computer player
-            players[1] = new MinimaxPlayer(1);
-            break;
-        case 5:
-            // Player 1 is a computer player
-            players[0] = new MinimaxPlayer(-1);
-            // Player 2 is a computer player
-            players[1] = new MinimaxPlayer(1);
-    }
+    gameManagement.selectMode(players, mode);
 
     nineBoard.getRandomFocusBoard(x, y);
     displayBoards.displayBoards(x,y);

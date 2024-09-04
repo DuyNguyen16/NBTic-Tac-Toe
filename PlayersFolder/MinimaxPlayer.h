@@ -28,7 +28,12 @@ public:
 // Get the player Move
 int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber)
 {
-    int biggestValue = -100000;
+    int biggestValue;
+    if (playerNumber == 1) {
+        biggestValue = -100000;
+    } else {
+        biggestValue = -100000;
+    }
 
     // check if the current board is empty
     if (board->getNoOfMoves() == 0)
@@ -60,13 +65,23 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board,
 
                     // restore the board
                     board->addMove(row, col, 0);
-
-                    // check if tempValue is bigger (maximising)
-                    if (tempValue > biggestValue)
-                    {
-                        biggestValue = tempValue;
-                        smallBoardX = row;
-                        smallBoardY = col;
+                    
+                    if (playerNumber == 1) {
+                        // check if tempValue is bigger (maximising)
+                        if (tempValue > biggestValue)
+                        {
+                            biggestValue = tempValue;
+                            smallBoardX = row;
+                            smallBoardY = col;
+                        }
+                    } else {
+                        // check if tempValue is bigger (maximising)
+                        if (tempValue < biggestValue)
+                        {
+                            biggestValue = tempValue;
+                            smallBoardX = row;
+                            smallBoardY = col;
+                        }
                     }
                 }
             }
