@@ -7,6 +7,10 @@
 // Nine Tic Tac Toe class
 class NBTicTacToe
 {
+private:
+	TicTacToe grid[3][3]; // nine TicTacToe board
+	Coordinate currentBoard;
+	int totalNoOfMoves = 0;
 public:
 	NBTicTacToe() {
 		currentBoard.x = 0;
@@ -44,11 +48,6 @@ public:
 	void getRandomFocusBoard(int &x, int &y );
 
 	int checkIfBoardAvailable(int checkX, int checkY);
-
-private:
-	TicTacToe grid[3][3]; // nine TicTacToe board
-	Coordinate currentBoard;
-	int totalNoOfMoves = 0;
 };
 
 

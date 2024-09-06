@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "../TicTacToeBoards/TicTacToe.h"
+#include "../TicTacToeBoards/NBTicTacToe.h"
 #include "Move.h"
 
 class MinimaxPlayer : public Player
@@ -19,19 +20,49 @@ public:
         return true;
     };
 
-    int getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber) override;
+    int getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid) override;
     int minimum(TicTacToe *board);
     int maximum(TicTacToe *board);
     int gameStatus(TicTacToe *board);
+    int checkNextBoard(TicTacToe *board, int playerNumber);
 };
 
+int MinimaxPlayer::checkNextBoard(TicTacToe *board, int playerNumber)
+{
+    int check = 2;
+    for (int row = 0; row < 3; row++)
+    {
+        for (int col = 0; col < 3; col++)
+        {
+            int cal = (3 * row) + col;
+            if (board->getBoard()[cal] == 0)
+            {
+                int tempCheck;
+                board->addMove(row, col, playerNumber);
+                tempCheck = gameStatus(board);
+                board->addMove(row, col, 0);
+                if (tempCheck == playerNumber)
+                {
+                    check = tempCheck;
+                }
+                
+            }
+        }
+    }
+
+    return check;
+}
+
 // Get the player Move
-int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber)
+int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid)
 {
     int bestValue;
-    if (playerNumber == 1) {
+    if (playerNumber == 1)
+    {
         bestValue = -100000;
-    } else {
+    }
+    else
+    {
         bestValue = 100000;
     }
 
@@ -61,30 +92,54 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board,
                     board->addMove(row, col, playerNumber);
                     int tempValue;
                     // get the value of the move
-                    if (playerNumber == 1) {
+                    if (playerNumber == 1)
+                    {
                         tempValue = minimum(board);
                     }
-                    else {
+                    else
+                    {
                         tempValue = maximum(board);
                     }
                     // restore the board
                     board->addMove(row, col, 0);
-                    
-                    if (playerNumber == 1) {
+
+                    if (playerNumber == 1)
+                    {
                         // check if tempValue is bigger (maximising)
                         if (tempValue > bestValue)
                         {
-                            bestValue = tempValue;
-                            smallBoardX = row;
-                            smallBoardY = col;
+                        // calculate the current board position on the grid
+                        int boardPositionOnGrid = (3 * row) + col;
+                        TicTacToe board = grid->getGrid()[boardPositionOnGrid];
+
+                            // check if this move is made will the next player on the next board win
+                            int CheckWinnerNextBoard = checkNextBoard(&board, -1);
+                            
+                            if (CheckWinnerNextBoard != -1)
+                            {
+                                bestValue = tempValue;
+                                smallBoardX = row;
+                                smallBoardY = col;
+                            }
                         }
-                    } else {
-                        // check if tempValue is bigger (minimising)
+                    }
+                    else
+                    {
+                        // check if tempValue is smaller (minimising)
                         if (tempValue < bestValue)
                         {
-                            bestValue = tempValue;
-                            smallBoardX = row;
-                            smallBoardY = col;
+                        // calculate the current board position on the grid
+                        int boardPositionOnGrid = (3 * row) + col;
+                        TicTacToe board = grid->getGrid()[boardPositionOnGrid];
+                        
+                            // check if this move is made will the next player on the next board win
+                            int CheckWinnerNextBoard = checkNextBoard(&board, 1);
+                            if (CheckWinnerNextBoard != 1)
+                            {
+                                bestValue = tempValue;
+                                smallBoardX = row;
+                                smallBoardY = col;
+                            }
                         }
                     }
                 }
@@ -179,6 +234,7 @@ int MinimaxPlayer::minimum(TicTacToe *board)
 
     return smallestValue;
 }
+
 
 // check the game status
 int MinimaxPlayer::gameStatus(TicTacToe *board)

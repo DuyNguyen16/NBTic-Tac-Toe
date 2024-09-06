@@ -21,6 +21,7 @@ private:
     GameManagement gameManagement;
     Player* players[2];
 public:
+    
     int play();
 
 };
@@ -46,8 +47,9 @@ int NBGame::play() {
         int playerMoveX;
         int playerMoveY;
         
-        this_thread::sleep_for(chrono::milliseconds(1000)); // Sleep for 1000 milliseconds (1 second)
-
+        if (mode == 5) {
+            this_thread::sleep_for(chrono::milliseconds(1000)); // Sleep for 1000 milliseconds (1 second)
+        }
         // calculate the current board position on the grid
         int boardPositionOnGrid = (3 * nineBoard.getCurrentMoveX()) + nineBoard.getCurrentMoveY();
 
@@ -58,12 +60,12 @@ int NBGame::play() {
         if (playerTurn == 1) {
             // get the player move and add it to the board
             players[1]->displayTurn();
-            players[1]->getMove(playerMoveX, playerMoveY, board, players[1]->getPlayerNumber());
+            players[1]->getMove(playerMoveX, playerMoveY, board, players[1]->getPlayerNumber(), &nineBoard);
             board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
         } else {
             // get the player move and add it to the board
             players[0]->displayTurn();
-            players[0]->getMove(playerMoveX, playerMoveY, board, players[0]->getPlayerNumber());
+            players[0]->getMove(playerMoveX, playerMoveY, board, players[0]->getPlayerNumber(), &nineBoard);
             board->addMove(playerMoveX, playerMoveY, players[0]->getPlayerNumber());
         }
         
