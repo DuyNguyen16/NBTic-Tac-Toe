@@ -78,10 +78,9 @@ int GameManagement::startGame() {
 int GameManagement::wholeGameStatus(TicTacToe *board, int totalNumberOfMoves) {
     if (board->getBoard()[0] == board->getBoard()[1] && board->getBoard()[1] == board->getBoard()[2]) {
         if (board->getBoard()[0] == 1) {
-            displayWinner(1);
-            return 1;
+                return 1;
         } else if (board->getBoard()[0] == -1) {
-            displayWinner(-1);
+    
             return -1;
         }
     }
@@ -89,10 +88,9 @@ int GameManagement::wholeGameStatus(TicTacToe *board, int totalNumberOfMoves) {
     // check second row
     if (board->getBoard()[3] == board->getBoard()[4] && board->getBoard()[4] == board->getBoard()[5]) {
         if (board->getBoard()[3] == 1) {
-            displayWinner(1);
-            return 1;
+                return 1;
         } else if (board->getBoard()[3] == -1) {
-            displayWinner(-1);
+    
             return -1;
         }
     }
@@ -100,10 +98,9 @@ int GameManagement::wholeGameStatus(TicTacToe *board, int totalNumberOfMoves) {
     // check third row 
     if (board->getBoard()[6] == board->getBoard()[7] && board->getBoard()[7] == board->getBoard()[8]) {
         if (board->getBoard()[6] == 1) {
-            displayWinner(1);
-            return 1;
+                return 1;
         } else if (board->getBoard()[6] == -1) {
-            displayWinner(-1);
+    
             return -1;
         }
     }
@@ -112,10 +109,9 @@ int GameManagement::wholeGameStatus(TicTacToe *board, int totalNumberOfMoves) {
     // Check first column
     if (board->getBoard()[0] == board->getBoard()[3] && board->getBoard()[3] == board->getBoard()[6]) {
         if (board->getBoard()[0] == 1) {
-            displayWinner(1);
-            return 1;
+                return 1;
         } else if (board->getBoard()[0] == -1) {
-            displayWinner(-1);
+    
             return -1;
         }
     }
@@ -123,10 +119,9 @@ int GameManagement::wholeGameStatus(TicTacToe *board, int totalNumberOfMoves) {
     // Check second column
     if (board->getBoard()[1] == board->getBoard()[4] && board->getBoard()[4] == board->getBoard()[7]) {
         if (board->getBoard()[1] == 1) {
-            displayWinner(1);
-            return 1;
+                return 1;
         } else if (board->getBoard()[1] == -1) {
-            displayWinner(-1);
+    
             return -1;
         }
     }
@@ -134,10 +129,9 @@ int GameManagement::wholeGameStatus(TicTacToe *board, int totalNumberOfMoves) {
     // Check third column
     if (board->getBoard()[2] == board->getBoard()[5] && board->getBoard()[5] == board->getBoard()[8]) {
         if (board->getBoard()[2] == 1) {
-            displayWinner(1);
-            return 1;
+                return 1;
         } else if (board->getBoard()[2] == -1) {
-            displayWinner(-1);
+    
             return -1;
         }
     }
@@ -145,30 +139,27 @@ int GameManagement::wholeGameStatus(TicTacToe *board, int totalNumberOfMoves) {
     // check diag
     if (board->getBoard()[0] == board->getBoard()[4] && board->getBoard()[4] == board->getBoard()[8]) {
         if (board->getBoard()[0] == 1) {
-            displayWinner(1);
-            return 1;
+                return 1;
         } else if (board->getBoard()[0] == -1) {
-            displayWinner(-1);
+    
             return -1;
         }
     }
     
     if (board->getBoard()[2] == board->getBoard()[4] && board->getBoard()[4] == board->getBoard()[6]) {
         if (board->getBoard()[2] == 1) {
-            displayWinner(1);
-            return 1;
+                return 1;
         } else if (board->getBoard()[2] == -1) {
-            displayWinner(-1);
+    
             return -1;
         }
     }
 
     if (totalNumberOfMoves >= 81) {
-        displayWinner(2);
-		return 2;
+		return 0;
     }
 
-	return 0;
+	return 2;
 }
 
 int GameManagement::displayWinner(int playerNumber) {

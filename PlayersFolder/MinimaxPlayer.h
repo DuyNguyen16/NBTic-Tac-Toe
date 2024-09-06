@@ -16,44 +16,95 @@ public:
 
     bool isValidMove(int x, int y, TicTacToe *board) override
     {
-        cout << "yes";
         return true;
     };
 
     int getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid) override;
+    void minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid);
     int minimum(TicTacToe *board);
     int maximum(TicTacToe *board);
     int gameStatus(TicTacToe *board);
     int checkNextBoard(TicTacToe *nextBoard, int playerNumber);
+    void removeCell(int availableCells[], int &size, int cell);
 };
 
-int MinimaxPlayer::checkNextBoard(TicTacToe *nextBoard, int playerNumber)
+
+int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid)
 {
-    int check = 2;
-    for (int row = 0; row < 3; row++)
+    // check if any mobe is made on the board
+    if (board->getNoOfMoves() != 0)
     {
-        for (int col = 0; col < 3; col++)
+        minimax(smallBoardX, smallBoardY, board, playerNumber, grid);
+    }
+    else
+    {
+        int availableCells[9] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+        int size = 9;
+
+        int cell;
+
+        while (true)
         {
-            int cal = (3 * row) + col;
-            if (nextBoard->getBoard()[cal] == 0)
+            // randomised select a cell on a board
+
+            srand(time(NULL));
+            cell = rand() % size;
+
+            TicTacToe *nextBoard = &grid->getGrid()[cell];
+
+            // check if the current player is X
+            if (playerNumber == 1)
             {
-                int tempCheck;
-                nextBoard->addMove(row, col, playerNumber);
-                tempCheck = gameStatus(nextBoard);
-                nextBoard->addMove(row, col, 0);
-                if (tempCheck == playerNumber)
+                // get the game status of next board
+                int CheckWinnerNextBoard = checkNextBoard(nextBoard, -1);
+
+                // Check if the oponent next move will win if X make this move
+                if (CheckWinnerNextBoard == -1)
                 {
-                    check = tempCheck;
+                    removeCell(availableCells, size, cell);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            else
+            {
+                // get the game status of next board
+                int CheckWinnerNextBoard = checkNextBoard(nextBoard, 1);
+
+                // Check if the oponent next move will win if O make this move
+                if (CheckWinnerNextBoard == 1)
+                {
+                    removeCell(availableCells, size, cell);
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        // change the x and y value for the to the next board
+        for (int row = 0; row < 3; row++)
+        {
+            for (int col = 0; col < 3; col++)
+            {
+                int cal = (3 * row) + col;
+                if (cal == cell)
+                {
+                    smallBoardX = row;
+                    smallBoardY = col;
                 }
             }
         }
     }
 
-    return check;
+    return 0;
 }
 
-// Get the player Move
-int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid)
+
+// Get the player Move (Minimax)
+void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid)
 {
     int bestValue;
     if (playerNumber == 1)
@@ -65,97 +116,91 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board,
         bestValue = 100000;
     }
 
-    // check if the current board is empty
-    if (board->getNoOfMoves() == 0)
+    // Loop through each cells in the board
+    for (int row = 0; row < 3; row++)
     {
-        // randomised select a cell on a board
-        srand(time(NULL));
-        int x = rand() % 3;
-        int y = rand() % 3;
-
-        smallBoardX = x;
-        smallBoardY = y;
-    }
-    else
-    {
-        // Loop through each cells in the board
-        for (int row = 0; row < 3; row++)
+        for (int col = 0; col < 3; col++)
         {
-            for (int col = 0; col < 3; col++)
+            int cal = (3 * row) + col;
+
+            // check for empty cell
+            if (board->getBoard()[cal] == 0)
             {
-                int cal = (3 * row) + col;
+                int tempValue;
 
-                // check for empty cell
-                if (board->getBoard()[cal] == 0)
+                board->addMove(row, col, playerNumber);
+                // get the value of the move
+
+                if (playerNumber == 1)
                 {
-                    int tempValue;
+                    tempValue = minimum(board);
+                }
+                else
+                {
+                    tempValue = maximum(board);
+                }
 
-                    board->addMove(row, col, playerNumber);
-                    // get the value of the move
-                    if (playerNumber == 1)
-                    {
-                        tempValue = minimum(board);
-                    }
-                    else
-                    {
-                        tempValue = maximum(board);
-                    }
+                // restore the board
+                board->addMove(row, col, 0);
 
-                    // restore the board
-                    board->addMove(row, col, 0);
-
-                    if (playerNumber == 1)
+                if (playerNumber == 1)
+                {
+                    // check if tempValue is bigger (maximising)
+                    if (tempValue > bestValue)
                     {
-                        // check if tempValue is bigger (maximising)
-                        if (tempValue > bestValue)
+                        // calculate the current board position on the grid
+                        int boardPositionOnGrid = (3 * row) + col;
+                        TicTacToe *nextBoard = &grid->getGrid()[boardPositionOnGrid];
+
+                        // check if this move is made will the next player on the next board win
+                        int CheckWinnerNextBoard = checkNextBoard(nextBoard, -1);
+
+                        // check if the next board is the same as this board
+                        if (board == nextBoard)
                         {
-                            // calculate the current board position on the grid
-                            int boardPositionOnGrid = (3 * row) + col;
-                            TicTacToe *nextBoard = &grid->getGrid()[boardPositionOnGrid];
-
-                            // check if this move is made will the next player on the next board win
-                            int CheckWinnerNextBoard = checkNextBoard(nextBoard, -1);
-
-                            // check if the next board is the same as this board
-                            if (board == nextBoard) {
+                            bestValue = tempValue;
+                            smallBoardX = row;
+                            smallBoardY = col;
+                        }
+                        else
+                        {
+                            // only change the value if the next board winner is not the opponent
+                            if (CheckWinnerNextBoard != -1)
+                            {
                                 bestValue = tempValue;
                                 smallBoardX = row;
                                 smallBoardY = col;
-                            } else {
-                                if (CheckWinnerNextBoard != -1)
-                                {
-                                    bestValue = tempValue;
-                                    smallBoardX = row;
-                                    smallBoardY = col;
-                                }
                             }
-
                         }
                     }
-                    else
+                }
+                else
+                {
+                    // check if tempValue is smaller (minimising)
+                    if (tempValue < bestValue)
                     {
-                        // check if tempValue is smaller (minimising)
-                        if (tempValue < bestValue)
-                        {
-                            // calculate the current board position on the grid
-                            int boardPositionOnGrid = (3 * row) + col;
-                            TicTacToe *nextBoard = &grid->getGrid()[boardPositionOnGrid];
+                        // calculate the current board position on the grid
+                        int boardPositionOnGrid = (3 * row) + col;
+                        TicTacToe *nextBoard = &grid->getGrid()[boardPositionOnGrid];
 
-                            // check if this move is made will the next player on the next board win
-                            int CheckWinnerNextBoard = checkNextBoard(nextBoard, 1);
-                            
-                            // check if the next board is the same as this board
-                            if (board == nextBoard) {
+                        // check if this move is made will the next player on the next board win
+                        int CheckWinnerNextBoard = checkNextBoard(nextBoard, 1);
+
+                        // check if the next board is the same as this board
+                        if (board == nextBoard)
+                        {
+                            bestValue = tempValue;
+                            smallBoardX = row;
+                            smallBoardY = col;
+                        }
+                        else
+                        {
+                            // only change the value if the next board winner is not the opponent
+                            if (CheckWinnerNextBoard != -1)
+                            {
                                 bestValue = tempValue;
                                 smallBoardX = row;
                                 smallBoardY = col;
-                            } else {
-                                if (CheckWinnerNextBoard != -1)
-                                {
-                                    bestValue = tempValue;
-                                    smallBoardX = row;
-                                    smallBoardY = col;
-                                }
                             }
                         }
                     }
@@ -165,7 +210,6 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board,
     }
 
     board->incrementNoOfMoves();
-    return 0;
 }
 
 // Maximising Player
@@ -251,6 +295,51 @@ int MinimaxPlayer::minimum(TicTacToe *board)
 
     return smallestValue;
 }
+
+int MinimaxPlayer::checkNextBoard(TicTacToe *nextBoard, int playerNumber)
+{
+    int check = 2;
+    for (int row = 0; row < 3; row++)
+    {
+        for (int col = 0; col < 3; col++)
+        {
+            int cal = (3 * row) + col;
+            if (nextBoard->getBoard()[cal] == 0)
+            {
+                int tempCheck;
+                nextBoard->addMove(row, col, playerNumber);
+                tempCheck = gameStatus(nextBoard);
+                nextBoard->addMove(row, col, 0);
+                if (tempCheck == playerNumber)
+                {
+                    check = tempCheck;
+                }
+            }
+        }
+    }
+
+    return check;
+}
+
+
+void MinimaxPlayer::removeCell(int availableCells[], int &size, int cell)
+{
+    for (int i = 0; i < size; i++)
+    {
+        if (availableCells[i] == cell)
+        {
+            for (int j = i; j < size - 1; j++)
+            {
+                availableCells[j] = availableCells[j + 1];
+            }
+            // Reduce the effective size of the array
+            size--;
+            break;
+        }
+    }
+};
+
+
 
 // check the game status
 int MinimaxPlayer::gameStatus(TicTacToe *board)

@@ -92,8 +92,9 @@ int NBGame::play() {
 
 
         // exit the game if true
-        if (gameStats == 1 || gameStats == 2 || gameStats == -1) {
-            return gameStats;
+        if (gameStats == 1 || gameStats == 0 || gameStats == -1) {
+            gameManagement.displayWinner(gameStats);
+            return 0;
         }
         
         // swap the player turn
