@@ -10,7 +10,7 @@ using namespace std;
 
 struct GameManagement {
     int startGame();
-    int gameStatus(TicTacToe *board);
+    int wholeGameStatus(TicTacToe *board, int totalNumberOfMoves);
     int displayWinner(int playerNumber);
     void swapPlayer(int &playerTurn);
     void selectMode(Player *players[], int mode);
@@ -75,11 +75,7 @@ int GameManagement::startGame() {
     return mode;
 }
 
-int GameManagement::gameStatus(TicTacToe *board) {
-    // check if board is full
-
-    // cout << board->getBoard()[0];
-    // Check first row
+int GameManagement::wholeGameStatus(TicTacToe *board, int totalNumberOfMoves) {
     if (board->getBoard()[0] == board->getBoard()[1] && board->getBoard()[1] == board->getBoard()[2]) {
         if (board->getBoard()[0] == 1) {
             displayWinner(1);
@@ -146,8 +142,6 @@ int GameManagement::gameStatus(TicTacToe *board) {
         }
     }
 
-
-
     // check diag
     if (board->getBoard()[0] == board->getBoard()[4] && board->getBoard()[4] == board->getBoard()[8]) {
         if (board->getBoard()[0] == 1) {
@@ -169,7 +163,7 @@ int GameManagement::gameStatus(TicTacToe *board) {
         }
     }
 
-    if (board->getNoOfMoves() >= 9) {
+    if (totalNumberOfMoves >= 81) {
         displayWinner(2);
 		return 2;
     }

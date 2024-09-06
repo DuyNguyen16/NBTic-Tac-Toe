@@ -88,12 +88,12 @@ int NBGame::play() {
         displayBoards.displayBoards(nineBoard.getCurrentMoveX(), nineBoard.getCurrentMoveY());
 
         // check the game status
-        int gameStats = gameManagement.gameStatus(board);
+        int gameStats = gameManagement.wholeGameStatus(board, nineBoard.getTotalNumberOfMoves());
 
 
         // exit the game if true
-        if (gameStats != 0 || nineBoard.getTotalNumberOfMoves() >= 81) {
-            return 0;
+        if (gameStats == 1 || gameStats == 2 || gameStats == -1) {
+            return gameStats;
         }
         
         // swap the player turn

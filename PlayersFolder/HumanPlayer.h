@@ -34,13 +34,13 @@ int HumanPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, i
     return 0;
 };
 
-
 // check if the move on a Tic Tac Toe is valid
 bool HumanPlayer::isValidMove(int x, int y, TicTacToe *board)
 { // Add your code to complete the program
     // check if  the position is n the board
     int currentPos = (3 * x) + y;
-    if (x >= 0 && x < 3 && y >= 0 && y < 3) {
+    if (x >= 0 && x < 3 && y >= 0 && y < 3)
+    {
         if (0 <= currentPos && currentPos <= 8)
         {
             // check if the position on board is taken
@@ -58,7 +58,9 @@ bool HumanPlayer::isValidMove(int x, int y, TicTacToe *board)
         {
             return false;
         }
-    } else {
+    }
+    else
+    {
         return false;
     }
 };
