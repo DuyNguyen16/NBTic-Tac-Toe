@@ -109,21 +109,20 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board,
 void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid)
 {
     int bestValue;
-    int backupValue;
     if (playerNumber == 1)
     {
         bestValue = -100000;
-        backupValue = -100000;
     }
     else
     {
         bestValue = 100000;
-        backupValue = 100000;
     }
 
+    // tempory x and y just incase the optimal moves are not selected
     int availableCells = 0;
     int tempX;
     int tempY;
+
     // Loop through each cells in the board
     for (int row = 0; row < 3; row++)
     {
@@ -148,6 +147,7 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
                     tempValue = maximum(board);
                 }
 
+
                 // restore the board
                 board->addMove(row, col, 0);
 
@@ -157,7 +157,6 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
                     if (tempValue > bestValue)
                     {
                         // back up value just incase if their is no optimal move (next board)
-                        backupValue = tempValue;
                         tempX = row;
                         tempY = col;
                         // calculate the current board position on the grid
@@ -183,6 +182,15 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
                                 smallBoardX = row;
                                 smallBoardY = col;
                                 availableCells += 1;
+                            } else {
+                                board->addMove(row, col, 1);
+                                if (gameStatus(board) == 1) {
+                                    bestValue = tempValue;
+                                    smallBoardX = row;
+                                    smallBoardY = col;
+                                    availableCells += 1;
+                                }
+                                board->addMove(row, col, 0);
                             }
                         }
                     }
@@ -193,7 +201,6 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
                     if (tempValue < bestValue)
                     {
                         // back up value just incase if their is no optimal move (next board)
-                        backupValue = tempValue;
                         tempX = row;
                         tempY = col;
                         // calculate the current board position on the grid
@@ -220,6 +227,15 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
                                 smallBoardX = row;
                                 smallBoardY = col;
                                 availableCells += 1;
+                            } else {
+                                board->addMove(row, col, -1);
+                                if (gameStatus(board) == -1) {
+                                    bestValue = tempValue;
+                                    smallBoardX = row;
+                                    smallBoardY = col;
+                                    availableCells += 1;
+                                }
+                                board->addMove(row, col, 0);
                             }
                         }
                     }

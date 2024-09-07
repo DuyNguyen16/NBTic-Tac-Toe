@@ -47,7 +47,7 @@ int NBGame::play() {
         int playerMoveX;
         int playerMoveY;
         
-        if (mode == 5) {
+        if (mode == 5 || mode == 4) {
             this_thread::sleep_for(chrono::milliseconds(1000)); // Sleep for 1000 milliseconds (1 second)
         }
         // calculate the current board position on the grid
@@ -94,15 +94,14 @@ int NBGame::play() {
         // exit the game if true
         if (gameStats == 1 || gameStats == 0 || gameStats == -1) {
             gameManagement.displayWinner(gameStats);
+            delete players[0];
+            delete players[1];
             return 0;
         }
         
         // swap the player turn
         gameManagement.swapPlayer(playerTurn);
     }
-
-    delete players[0];
-    delete players[1];
     return 0;
 };
 
