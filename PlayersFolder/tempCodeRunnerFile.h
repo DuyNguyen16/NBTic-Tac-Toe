@@ -1,3 +1,0 @@
-    int getPlayerNumber() {
-        return playerNumber;
-    }

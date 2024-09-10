@@ -51,7 +51,7 @@ public:
 };
 
 
-
+// get random board to focus on
 void NBTicTacToe::getRandomFocusBoard(int &x, int &y) {
 		do
 	{
@@ -64,6 +64,7 @@ void NBTicTacToe::getRandomFocusBoard(int &x, int &y) {
 	currentBoard.y = y;
 }
 
+// check if the currently board is available
 int NBTicTacToe::checkIfBoardAvailable(int checkX, int checkY)
 {
 	if (grid[checkX][checkY].getNoOfMoves() >= 9)

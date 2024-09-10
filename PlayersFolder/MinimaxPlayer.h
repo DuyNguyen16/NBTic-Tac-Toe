@@ -10,7 +10,12 @@ class MinimaxPlayer : public Player
 {
 private:
     Move move;
-
+    void minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid);
+    int minimum(TicTacToe *board);
+    int maximum(TicTacToe *board);
+    int gameStatus(TicTacToe *board);
+    int checkNextBoard(TicTacToe *nextBoard, int playerNumber);
+    void removeCell(int availableCells[], int &size, int cell);
 public:
     MinimaxPlayer(int x) : Player(x) {};
 
@@ -20,12 +25,6 @@ public:
     };
 
     int getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid) override;
-    void minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid);
-    int minimum(TicTacToe *board);
-    int maximum(TicTacToe *board);
-    int gameStatus(TicTacToe *board);
-    int checkNextBoard(TicTacToe *nextBoard, int playerNumber);
-    void removeCell(int availableCells[], int &size, int cell);
 };
 
 
@@ -152,7 +151,6 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
                 board->addMove(row, col, 0);
                 board->decrementNoOfMoves();
 
-                cout << bestValue << " " << tempValue << endl;
                 if (playerNumber == 1)
                 {
                     // check if tempValue is bigger (maximising)
@@ -250,8 +248,6 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
     if (availableCells == 0) {
         smallBoardX = tempX;
         smallBoardY = tempY;
-
-        cout << smallBoardX << " " << smallBoardY << endl;
     }
     board->incrementNoOfMoves();
 }

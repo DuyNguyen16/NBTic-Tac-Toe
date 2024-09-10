@@ -3,6 +3,7 @@
 
 #include "Player.h"
 
+// Human player class
 class HumanPlayer : public Player
 {
 public:
@@ -11,14 +12,16 @@ public:
     bool isValidMove(int x, int y, TicTacToe *board) override;
 };
 
+// get the human class
 int HumanPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid)
 {
-
+    // check if board is fulll
     if (board->getNoOfMoves() >= 9)
     {
         return 1;
     }
 
+    // get the player moves
     do
     {
         cout << " Enter row position: ";
@@ -36,9 +39,10 @@ int HumanPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, i
 
 // check if the move on a Tic Tac Toe is valid
 bool HumanPlayer::isValidMove(int x, int y, TicTacToe *board)
-{ // Add your code to complete the program
+{ 
     // check if  the position is n the board
     int currentPos = (3 * x) + y;
+    // check if x and y is within the range
     if (x >= 0 && x < 3 && y >= 0 && y < 3)
     {
         if (0 <= currentPos && currentPos <= 8)
@@ -59,10 +63,7 @@ bool HumanPlayer::isValidMove(int x, int y, TicTacToe *board)
             return false;
         }
     }
-    else
-    {
         return false;
-    }
 };
 
 #endif

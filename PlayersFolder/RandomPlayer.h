@@ -37,7 +37,7 @@ int RandomPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, 
 
 // check if the move on a Tic Tac Toe is valid
 bool RandomPlayer::isValidMove(int x, int y, TicTacToe *board)
-{ // Add your code to complete the program
+{
     // check if  the position is n the board
     int currentPos = (3 * x) + y;
     if (0 <= currentPos && currentPos <= 8)
