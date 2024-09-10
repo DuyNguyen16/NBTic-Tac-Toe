@@ -17,7 +17,7 @@ public:
 };
 
 
-// Display the one row of the main board
+// Display one row of the main board
 void DisplayBoards::displayBoardsRow(int boardRowNumber, int x, int y)
 {
 	for (int col = 0; col < 3; col++)

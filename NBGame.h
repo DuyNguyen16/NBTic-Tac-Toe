@@ -47,8 +47,12 @@ int NBGame::play() {
         int playerMoveX;
         int playerMoveY;
         
+        // display the player turn
+        (playerTurn == 1) ? players[1]->displayTurn() : players[0]->displayTurn();
+
         if (mode == 5 || mode == 4) {
-            this_thread::sleep_for(chrono::milliseconds(1000)); // Sleep for 1000 milliseconds (1 second)
+            // Delay for 1 second
+            this_thread::sleep_for(chrono::milliseconds(1000));
         }
         // calculate the current board position on the grid
         int boardPositionOnGrid = (3 * nineBoard.getCurrentMoveX()) + nineBoard.getCurrentMoveY();
@@ -59,12 +63,10 @@ int NBGame::play() {
         // checkk which player turn it is
         if (playerTurn == 1) {
             // get the player move and add it to the board
-            players[1]->displayTurn();
             players[1]->getMove(playerMoveX, playerMoveY, board, players[1]->getPlayerNumber(), &nineBoard);
             board->addMove(playerMoveX, playerMoveY, players[1]->getPlayerNumber());
         } else {
             // get the player move and add it to the board
-            players[0]->displayTurn();
             players[0]->getMove(playerMoveX, playerMoveY, board, players[0]->getPlayerNumber(), &nineBoard);
             board->addMove(playerMoveX, playerMoveY, players[0]->getPlayerNumber());
         }
