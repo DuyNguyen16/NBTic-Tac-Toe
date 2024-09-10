@@ -42,7 +42,6 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board,
         while (true)
         {
             // randomised select a cell on a board
-
             srand(time(NULL));
             cell = rand() % size;
 
@@ -108,6 +107,7 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board,
 // Get the player Move (Minimax)
 void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid)
 {
+    // check if x or o player
     int bestValue;
     if (playerNumber == 1)
     {
@@ -137,6 +137,7 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
 
                 board->addMove(row, col, playerNumber);
                 // get the value of the move
+                board->incrementNoOfMoves();
 
                 if (playerNumber == 1)
                 {
@@ -147,10 +148,11 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
                     tempValue = maximum(board);
                 }
 
-
                 // restore the board
                 board->addMove(row, col, 0);
+                board->decrementNoOfMoves();
 
+                cout << bestValue << " " << tempValue << endl;
                 if (playerNumber == 1)
                 {
                     // check if tempValue is bigger (maximising)
@@ -203,6 +205,7 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
                         // back up value just incase if their is no optimal move (next board)
                         tempX = row;
                         tempY = col;
+
                         // calculate the current board position on the grid
                         int boardPositionOnGrid = (3 * row) + col;
                         TicTacToe *nextBoard = &grid->getGrid()[boardPositionOnGrid];
@@ -247,6 +250,8 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
     if (availableCells == 0) {
         smallBoardX = tempX;
         smallBoardY = tempY;
+
+        cout << smallBoardX << " " << smallBoardY << endl;
     }
     board->incrementNoOfMoves();
 }
