@@ -1,5 +1,5 @@
-#ifndef Player_H_
-#define Player_H_
+#ifndef PLAYER_H_
+#define PLAYER_H_
 
 #include "../TicTacToeBoards/TicTacToe.h"
 

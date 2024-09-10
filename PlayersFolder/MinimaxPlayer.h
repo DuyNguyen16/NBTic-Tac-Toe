@@ -27,10 +27,10 @@ public:
     int getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid) override;
 };
 
-
+// minimax bot get move
 int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board, int playerNumber, NBTicTacToe *grid)
 {
-    // check if any mobe is made on the board
+    // check if the current board is empty
     if (board->getNoOfMoves() == 0)
     {
         int availableCells[9] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
@@ -49,12 +49,13 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board,
             // check if the current player is X
             if (playerNumber == 1)
             {
-                // get the game status of next board
+                // get the game status of next board if the move is made
                 int CheckWinnerNextBoard = checkNextBoard(nextBoard, -1);
 
                 // Check if the oponent next move will win if X make this move
                 if (CheckWinnerNextBoard == -1)
                 {
+                    // remove the cell from the array
                     removeCell(availableCells, size, cell);
                 }
                 else
@@ -91,12 +92,12 @@ int MinimaxPlayer::getMove(int &smallBoardX, int &smallBoardY, TicTacToe *board,
                 }
             }
         }
+        // increment the moves made
         board->incrementNoOfMoves();
     }
     else
     {
         minimax(smallBoardX, smallBoardY, board, playerNumber, grid);
-        
     }
 
     return 0;
@@ -118,7 +119,7 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
     }
 
     // tempory x and y just incase the optimal moves are not selected
-    int availableCells = 0;
+    int bestMovesCount = 0;
     int tempX;
     int tempY;
 
@@ -134,23 +135,27 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
             {
                 int tempValue;
 
+                // make the move and increment the number of moves made
                 board->addMove(row, col, playerNumber);
-                // get the value of the move
                 board->incrementNoOfMoves();
 
+                // check which player it is to start the minimax recursion
                 if (playerNumber == 1)
                 {
+                    // get the value of the move
                     tempValue = minimum(board);
                 }
                 else
                 {
+                    // get the value of the move
                     tempValue = maximum(board);
                 }
 
-                // restore the board
+                // restore the board and the number of moves made
                 board->addMove(row, col, 0);
                 board->decrementNoOfMoves();
 
+                // Check which player turn it is
                 if (playerNumber == 1)
                 {
                     // check if tempValue is bigger (maximising)
@@ -171,24 +176,25 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
                             bestValue = tempValue;
                             smallBoardX = row;
                             smallBoardY = col;
-                            availableCells += 1;
+                            bestMovesCount += 1;
                         }
                         else
                         {
-                            // only change the value if the next board winner is not the opponent
+                            // only change the values if the next board winner is not the opponent
                             if (CheckWinnerNextBoard != -1)
                             {
                                 bestValue = tempValue;
                                 smallBoardX = row;
                                 smallBoardY = col;
-                                availableCells += 1;
+                                bestMovesCount += 1;
                             } else {
+                                // prioritise if the move made will result in an instant winning
                                 board->addMove(row, col, 1);
                                 if (gameStatus(board) == 1) {
                                     bestValue = tempValue;
                                     smallBoardX = row;
                                     smallBoardY = col;
-                                    availableCells += 1;
+                                    bestMovesCount += 1;
                                 }
                                 board->addMove(row, col, 0);
                             }
@@ -203,38 +209,36 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
                         // back up value just incase if their is no optimal move (next board)
                         tempX = row;
                         tempY = col;
-
                         // calculate the current board position on the grid
                         int boardPositionOnGrid = (3 * row) + col;
                         TicTacToe *nextBoard = &grid->getGrid()[boardPositionOnGrid];
-
                         // check if this move is made will the next player on the next board win
                         int CheckWinnerNextBoard = checkNextBoard(nextBoard, 1);
-
                         // check if the next board is the same as this board
                         if (board == nextBoard)
                         {
                             bestValue = tempValue;
                             smallBoardX = row;
                             smallBoardY = col;
-                            availableCells += 1;
+                            bestMovesCount += 1;
                         }
                         else
                         {
-                            // only change the value if the next board winner is not the opponent
+                            // only change the values if the next board winner is not the opponent
                             if (CheckWinnerNextBoard != 1)
                             {
                                 bestValue = tempValue;
                                 smallBoardX = row;
                                 smallBoardY = col;
-                                availableCells += 1;
+                                bestMovesCount += 1;
                             } else {
+                                // prioritise if the move made will result in an instant winning
                                 board->addMove(row, col, -1);
                                 if (gameStatus(board) == -1) {
                                     bestValue = tempValue;
                                     smallBoardX = row;
                                     smallBoardY = col;
-                                    availableCells += 1;
+                                    bestMovesCount += 1;
                                 }
                                 board->addMove(row, col, 0);
                             }
@@ -245,7 +249,8 @@ void MinimaxPlayer::minimax(int &smallBoardX, int &smallBoardY, TicTacToe *board
         }
     }
 
-    if (availableCells == 0) {
+    // check if no best move was selected
+    if (bestMovesCount == 0) {
         smallBoardX = tempX;
         smallBoardY = tempY;
     }
@@ -273,12 +278,13 @@ int MinimaxPlayer::maximum(TicTacToe *board)
             // check for empty cell
             if (board->getBoard()[cal] == 0)
             {
+                // make the move of the current player and increment the number of moves made
                 board->addMove(row, col, 1);
                 board->incrementNoOfMoves();
 
                 // get the value of the move
                 int tempValue = minimum(board);
-
+                // restore the move of the current player and decrement the number of moves made
                 board->decrementNoOfMoves();
                 board->addMove(row, col, 0);
 
@@ -290,7 +296,6 @@ int MinimaxPlayer::maximum(TicTacToe *board)
             }
         }
     }
-
     return biggestValue;
 }
 
@@ -333,24 +338,32 @@ int MinimaxPlayer::minimum(TicTacToe *board)
             }
         }
     }
-
     return smallestValue;
 }
 
+// check if next board will have a winner
 int MinimaxPlayer::checkNextBoard(TicTacToe *nextBoard, int playerNumber)
 {
     int check = 2;
+    // loop through each row on board
     for (int row = 0; row < 3; row++)
     {
+        // loop through each column on board
         for (int col = 0; col < 3; col++)
         {
+            // calculate the position
             int cal = (3 * row) + col;
+            // check if the cell is empty
             if (nextBoard->getBoard()[cal] == 0)
             {
                 int tempCheck;
+                // make the move to the board
                 nextBoard->addMove(row, col, playerNumber);
+                // get the game status of the board
                 tempCheck = gameStatus(nextBoard);
+                // restore the board
                 nextBoard->addMove(row, col, 0);
+                // check if gameStatus return the same value as playerNumber wanted to check
                 if (tempCheck == playerNumber)
                 {
                     check = tempCheck;
@@ -358,22 +371,24 @@ int MinimaxPlayer::checkNextBoard(TicTacToe *nextBoard, int playerNumber)
             }
         }
     }
-
     return check;
 }
 
-
+// remove value from array for randomise
 void MinimaxPlayer::removeCell(int availableCells[], int &size, int cell)
 {
+    // for each element in the array
     for (int i = 0; i < size; i++)
     {
+        // check if the array element is the same as the cell
         if (availableCells[i] == cell)
         {
+            // move every elements to the left
             for (int j = i; j < size - 1; j++)
             {
                 availableCells[j] = availableCells[j + 1];
             }
-            // Reduce the effective size of the array
+            // Reduce size of the array
             size--;
             break;
         }

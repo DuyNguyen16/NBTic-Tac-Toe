@@ -1,6 +1,5 @@
-#ifndef Move_H_
-#define Move_H_
-
+#ifndef MOVE_H_
+#define MOVE_H_
 
 struct Move
 {
