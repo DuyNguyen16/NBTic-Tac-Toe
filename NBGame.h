@@ -41,11 +41,13 @@ int NBGame::play() {
 
     // player turn
     int playerTurn = 1;
+    int roundCount = 0;
 
     while (true) {
         // player moves
         int playerMoveX;
         int playerMoveY;
+        roundCount++;
         
         // display the player turn
         (playerTurn == 1) ? players[1]->displayTurn() : players[0]->displayTurn();
@@ -96,6 +98,7 @@ int NBGame::play() {
         // exit the game if true
         if (gameStats == 1 || gameStats == 0 || gameStats == -1) {
             gameManagement.displayWinner(gameStats);
+            cout << "Number of rounds played: " << roundCount <<  endl;
             delete players[0];
             delete players[1];
             return 0;
